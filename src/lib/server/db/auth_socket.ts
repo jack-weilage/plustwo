@@ -27,7 +27,6 @@ export async function authenticate(
 			"CF-Access-Client-Id": clientId,
 			"CF-Access-Client-Secret": clientSecret,
 			// Upgrade to a websocket connection
-			Connection: "Upgrade",
 			Upgrade: "websocket",
 		},
 	});
