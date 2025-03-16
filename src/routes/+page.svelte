@@ -1,33 +1,26 @@
 <script lang="ts">
-	// import { ChatClient } from "@twurple/chat";
+	import MainChart from "$lib/components/MainChart.svelte";
 
-	import { use } from "echarts/core";
-	import { BarChart, LineChart } from "echarts/charts";
-	import { onMount } from "svelte";
-	import { MediaQuery } from "svelte/reactivity";
-	import {
-		GridComponent,
-		LegendComponent,
-		TooltipComponent,
-		DatasetComponent,
-		DataZoomComponent,
-		VisualMapComponent,
-	} from "echarts/components";
-	import { CanvasRenderer } from "echarts/renderers";
+	let { data } = $props();
+	let candlestick_series = $state([]);
 
-	import Chart from "$lib/echart/Chart.svelte";
+	$effect(() => {
+		let total = 0;
+		candlestick_series = data.sentiment.map(({ minute, plusTwoCount, minusTwoCount }) => {
+			const current_total = total;
+			const difference = plusTwoCount - minusTwoCount;
 
-	import type { EChartsOption } from "echarts/types/dist/shared";
-	import type { EChartsType } from "echarts/core";
+			total += difference;
+			return {
+				// Add a Z to the end of the string to ensure that the date is parsed as UTC
+				timestamp: new Date(minute + "Z"),
 
-	let total_series = $state([]);
-
-	onMount(async () => {
-		chart.showLoading();
-
-		total_series = await fetch("/api/records/any_id").then((res) => res.json());
-
-		chart.hideLoading();
+				open: current_total,
+				close: total,
+				lowest: current_total - minusTwoCount,
+				highest: current_total + plusTwoCount,
+			};
+		});
 	});
 
 	// type MessageKind = "plus-two" | "minus-two";
@@ -39,6 +32,8 @@
 	// 	}[] = $state([]);
 	// const CHANNELS = ["Northernlion"];
 
+	// import { ChatClient } from "@twurple/chat";
+	//
 	// onMount(() => {
 	// 	console.log(data);
 	// 	const chat = new ChatClient({ channels: CHANNELS });
@@ -77,128 +72,67 @@
 	// 		chat.quit();
 	// 	};
 	// });
-
-	use([
-		LineChart,
-		BarChart,
-
-		VisualMapComponent,
-		GridComponent,
-		LegendComponent,
-		TooltipComponent,
-
-		DatasetComponent,
-		DataZoomComponent,
-
-		CanvasRenderer,
-	]);
-	let chart: EChartsType = $state()!;
-	let options: EChartsOption = $derived({
-		dataset: {
-			dimensions: ["timestamp", "total", "plus_two", "minus_two", "difference"],
-			source: total_series,
-		},
-		visualMap: {
-			show: false,
-			seriesIndex: 1,
-			dimension: 4,
-			pieces: [
-				{
-					gte: 0,
-					color: "green",
-				},
-				{
-					lt: 0,
-					color: "red",
-				},
-			],
-		},
-
-		tooltip: {
-			trigger: "axis",
-		},
-		xAxis: [
-			{
-				type: "time",
-			},
-			{
-				type: "time",
-				gridIndex: 1,
-				axisLine: { onZero: false },
-				axisTick: { show: false },
-				splitLine: { show: false },
-				axisLabel: { show: false },
-			},
-		],
-		yAxis: [
-			{
-				name: "Total",
-				type: "value",
-			},
-			{
-				name: "Sentiment",
-				gridIndex: 1,
-				axisLine: { show: false },
-				axisTick: { show: false },
-
-				// splitLine: { show: false },
-			},
-		],
-		grid: [
-			{
-				left: "10%",
-				right: "8%",
-				height: "50%",
-			},
-			{
-				left: "10%",
-				right: "8%",
-				top: "63%",
-				height: "16%",
-			},
-		],
-		legend: {
-			// Don't allow components of the graph to be toggled
-			selectedMode: false,
-		},
-		dataZoom: [
-			{
-				type: "slider",
-				start: 0,
-				end: 100,
-				xAxisIndex: [0, 1],
-			},
-			{
-				type: "inside",
-				start: 0,
-				end: 100,
-				xAxisIndex: [0, 1],
-			},
-		],
-		series: [
-			{
-				type: "line",
-				name: "Total Value",
-				showSymbol: false,
-				encode: { x: "timestamp", y: "total" },
-			},
-			{
-				type: "bar",
-				name: "Sentiment",
-				encode: { x: "timestamp", y: "difference" },
-				xAxisIndex: 1,
-				yAxisIndex: 1,
-			},
-		],
-	});
-
-	const theme = $derived(new MediaQuery("(prefers-color-scheme: dark)").current ? "dark" : "light");
 </script>
 
 <svelte:head>
 	<title>+2.live</title>
 </svelte:head>
 
-<main class="w-screen min-h-screen h-full dark:bg-slate-900 py-4">
-	<Chart bind:chart class="h-[80dvh] w-full max-w-6xl mx-auto" {theme} {options} />
+<main class="w-screen min-h-screen h-full py-4 px-2">
+	<section class="flex place-content-center px-4 mb-12">
+		<MainChart broadcasts={data.broadcasts} candlestick={candlestick_series} />
+	</section>
+
+	<section class="px-4 mb-6">
+		<p>A website tracking the good and bad jokes of streamer Northernlion, as rated by his chat.</p>
+
+		<h2 class="font-bold">How does this work?</h2>
+		<p>
+			A program reads all chat messages sent, looking for any that start or end with "+2" or "-2".
+			These messages are automatically stored in a database, alongside the chatter who sent them and
+			which broadcast they were sent in.
+		</p>
+	</section>
+
+	<section class="px-4">
+		<h2 class="font-bold text-2xl">Totals</h2>
+
+		<ul class="flex place-content-around">
+			<li class="py-4 px-6 rounded-2xl border border-gray-50">
+				<h3 class="font-semibold text-xl">Messages</h3>
+				{(data.totals.plusTwoCount + data.totals.minusTwoCount).toLocaleString()} messages have been
+				stored. Of these:
+				<ul class="list-disc list-inside">
+					<li class="text-green-400">
+						{data.totals.plusTwoCount.toLocaleString()} messages have a +2 ({(
+							(data.totals.plusTwoCount / (data.totals.plusTwoCount + data.totals.minusTwoCount)) *
+							100
+						).toFixed(2)}%)
+					</li>
+					<li class="text-rose-500">
+						{data.totals.minusTwoCount.toLocaleString()} messages have a -2 ({(
+							(data.totals.minusTwoCount / (data.totals.plusTwoCount + data.totals.minusTwoCount)) *
+							100
+						).toFixed(2)}%)
+					</li>
+				</ul>
+			</li>
+			<li>
+				<h3 class="font-semibold text-xl">Chatters</h3>
+			</li>
+			<li>
+				<h3 class="font-semibold text-xl">Broadcasts</h3>
+			</li>
+			<!-- <li> -->
+			<!-- 	<h3>Average Chatter</h3> -->
+			<!-- 	<p>The average chatter is 87% positive/negative, sending N +2's and N -2's</p> -->
+			<!-- </li> -->
+			<!-- <li> -->
+			<!-- 	<h3>Average Broadcast</h3> -->
+			<!-- 	<p> -->
+			<!-- 		The average broadcast sees NUMBER chatters sending PERCENT% positive sentiment over TIME. -->
+			<!-- 	</p> -->
+			<!-- </li> -->
+		</ul>
+	</section>
 </main>
