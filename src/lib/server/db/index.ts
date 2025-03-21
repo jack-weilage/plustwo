@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "../drizzle/schema";
 import { env } from "$env/dynamic/private";
-import { dev } from "$app/environment";
+import { building, dev } from "$app/environment";
 import { authenticate } from "./auth_socket";
 
 if (dev && !env.DATABASE_URL) throw new Error("DATABASE_URL is not set");
@@ -32,9 +32,14 @@ const client = dev
 			database: env.DATABASE_DB,
 			user: env.DATABASE_USER,
 			password: env.DATABASE_PASSWORD,
-			socket: await authenticate(env.DATABASE_HOST, env.CF_CLIENT_ID, env.CF_CLIENT_SECRET).then(
-				(sock) => () => sock,
-			),
+
+			// Don't attempt to connect while building, as the Cloudflare Workers build environment
+			// doesn't have access to websockets.
+			socket: building
+				? undefined
+				: await authenticate(env.DATABASE_HOST, env.CF_CLIENT_ID, env.CF_CLIENT_SECRET).then(
+						(sock) => () => sock,
+					),
 		});
 
 export const db = drizzle(client, {
