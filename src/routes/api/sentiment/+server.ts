@@ -1,10 +1,11 @@
 import { messages } from "$lib/server/drizzle/schema";
 import { count, sql } from "drizzle-orm";
 import type { RequestHandler } from "./$types";
-import { db } from "$lib/server/db";
+import { connect } from "$lib/server/db";
 import { json } from "@sveltejs/kit";
 
 export const GET: RequestHandler = async () => {
+	const db = await connect();
 	const sentimentList = await db
 		.select({
 			minute: sql<Date>`DATE_TRUNC('minute', ${messages.sentAt})`,

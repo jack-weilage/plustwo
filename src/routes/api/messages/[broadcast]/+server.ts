@@ -1,10 +1,11 @@
-import { db } from "$lib/server/db";
+import { connect } from "$lib/server/db";
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { chatters, messages } from "$lib/server/drizzle/schema";
 import { eq } from "drizzle-orm";
 
 export const GET: RequestHandler = async ({ params }) => {
+	const db = await connect();
 	const message_list = await db
 		.select({
 			message: { kind: messages.messageKind, sentAt: messages.sentAt },
