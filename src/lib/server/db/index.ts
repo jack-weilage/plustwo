@@ -23,25 +23,29 @@ if (!dev) {
 	}
 }
 
-// Connect directly to the database during development, but use secure tunnel in production.
-const client = dev
-	? postgres(env.DATABASE_URL)
-	: // @ts-expect-error: postgres-js doesn't document that you can use a function to return a
-		// custom socket. A custom socket is used to authenticate via Cloudflare Access.
-		postgres({
-			database: env.DATABASE_DB,
-			user: env.DATABASE_USER,
-			password: env.DATABASE_PASSWORD,
+export async function connect() {
+	// Connect directly to the database during development, but use secure tunnel in production.
+	const client = dev
+		? postgres(env.DATABASE_URL)
+		: // @ts-expect-error: postgres-js doesn't document that you can use a function to return a
+			// custom socket. A custom socket is used to authenticate via Cloudflare Access.
+			postgres({
+				database: env.DATABASE_DB,
+				user: env.DATABASE_USER,
+				password: env.DATABASE_PASSWORD,
 
-			// Don't attempt to connect while building, as the Cloudflare Workers build environment
-			// doesn't have access to websockets.
-			socket: building
-				? undefined
-				: await authenticate(env.DATABASE_HOST, env.CF_CLIENT_ID, env.CF_CLIENT_SECRET).then(
-						(sock) => () => sock,
-					),
-		});
+				// Don't attempt to connect while building, as the Cloudflare Workers build environment
+				// doesn't have access to websockets.
+				socket: building
+					? undefined
+					: await authenticate(env.DATABASE_HOST, env.CF_CLIENT_ID, env.CF_CLIENT_SECRET).then(
+							(sock) => () => sock,
+						),
+			});
 
-export const db = drizzle(client, {
-	schema,
-});
+	const db = drizzle(client, {
+		schema,
+	});
+
+	return db;
+}

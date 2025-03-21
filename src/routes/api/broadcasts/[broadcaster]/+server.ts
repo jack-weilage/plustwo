@@ -1,11 +1,13 @@
 import type { RequestHandler } from "./$types";
 
-import { db } from "$lib/server/db";
+import { connect } from "$lib/server/db";
 import { broadcasters, broadcasts } from "$lib/server/drizzle/schema";
 import { eq } from "drizzle-orm";
 import { json } from "@sveltejs/kit";
 
 export const GET: RequestHandler = async ({ params }) => {
+	const db = await connect();
+
 	const broadcast_list = await db
 		.select({
 			id: broadcasts.id,
