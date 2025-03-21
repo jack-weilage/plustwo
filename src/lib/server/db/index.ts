@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "../drizzle/schema";
 import { env } from "$env/dynamic/private";
-import { building, dev } from "$app/environment";
+import { dev } from "$app/environment";
 import { authenticate } from "./auth_socket";
 
 if (dev && !env.DATABASE_URL) throw new Error("DATABASE_URL is not set");
@@ -20,15 +20,18 @@ if (
 	);
 }
 
+// Connect directly to the database during development, but use secure tunnel in production.
 const client = dev
 	? postgres(env.DATABASE_URL)
-	: postgres({
+	: // @ts-expect-error: postgres-js doesn't document that you can use a function to return a
+		// custom socket. A custom socket is used to authenticate via Cloudflare Access.
+		postgres({
 			database: env.DATABASE_DB,
 			user: env.DATABASE_USER,
 			password: env.DATABASE_PASSWORD,
-			client: building
-				? null
-				: authenticate(env.DATABASE_HOST, env.CF_CLIENT_ID, env.CF_CLIENT_SECRET),
+			socket: await authenticate(env.DATABASE_HOST, env.CF_CLIENT_ID, env.CF_CLIENT_SECRET).then(
+				(sock) => () => sock,
+			),
 		});
 
 export const db = drizzle(client, {
