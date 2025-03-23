@@ -22,56 +22,6 @@
 			};
 		});
 	});
-
-	// type MessageKind = "plus-two" | "minus-two";
-	// 	const messages: {
-	// 		timestamp: Date;
-	// 		user: string;
-	// 		id: string;
-	// 		kind: MessageKind;
-	// 	}[] = $state([]);
-	// const CHANNELS = ["Northernlion"];
-
-	// import { ChatClient } from "@twurple/chat";
-	//
-	// onMount(() => {
-	// 	console.log(data);
-	// 	const chat = new ChatClient({ channels: CHANNELS });
-	//
-	// 	// chat.connect();
-	// 	chat.onConnect(() => console.log("connected"));
-	//
-	// 	chat.onJoin((ev) => console.log("joined", ev));
-	// 	chat.onJoinFailure(() => console.log("join failed"));
-	//
-	// 	chat.onMessage((_channel, _user, _text, msg) => {
-	// 		console.log(`@${msg.userInfo.userName}: ${msg.text}`);
-	//
-	// 		if (msg.text === "+2") {
-	// 			messages.push({
-	// 				timestamp: msg.date,
-	// 				user: msg.userInfo.userName,
-	// 				id: msg.id,
-	// 				kind: "plus-two",
-	// 			});
-	// 		} else if (msg.text == "-2") {
-	// 			messages.push({
-	// 				timestamp: msg.date,
-	// 				user: msg.userInfo.userName,
-	// 				id: msg.id,
-	// 				kind: "minus-two",
-	// 			});
-	// 		}
-	// 	});
-	//
-	// 	return () => {
-	// 		for (const channel of CHANNELS) {
-	// 			chat.part(channel);
-	// 		}
-	//
-	// 		chat.quit();
-	// 	};
-	// });
 </script>
 
 <svelte:head>
