@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { HTMLAttributes } from "svelte/elements";
 	import { onMount } from "svelte";
-	import { init, type EChartsCoreOption, type EChartsType } from "echarts/core";
+	import { init, type EChartsType } from "echarts/core";
+	import type { EChartsOption } from "echarts/types/dist/shared";
 
 	let {
 		theme = "light",
@@ -12,7 +13,7 @@
 	}: {
 		theme?: "light" | "dark";
 		init?: object;
-		options: EChartsCoreOption;
+		options: EChartsOption;
 		chart: EChartsType;
 	} & HTMLAttributes<HTMLDivElement> = $props();
 
@@ -37,4 +38,4 @@
 	});
 </script>
 
-<div bind:this={ref} class="w-full h-full {restProps.class}" {...restProps}></div>
+<div bind:this={ref} class="h-full w-full {restProps.class}" {...restProps}></div>

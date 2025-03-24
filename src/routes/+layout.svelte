@@ -5,13 +5,17 @@
 	let { children } = $props();
 </script>
 
-<header class="px-3 py-4 mb-2"></header>
+<header class="mb-2 px-3 py-4">
+	<div class="mr-auto">
+		<a href="/">+2.live</a>
+	</div>
+</header>
 
 {@render children()}
 
 <footer class="border-t border-t-gray-700 px-3 py-4">
 	<p class="mb-2">
-		Built with <Heart size="1em" strokeWidth={3} class="inline-block mx-0.5 mb-0.5" /> by
+		Built with <Heart size="1em" strokeWidth={3} class="mx-0.5 mb-0.5 inline-block" /> by
 		<a
 			href="https://weilage.dev?utm_source=plustwo"
 			target="_blank"

@@ -41,6 +41,7 @@ export async function authenticate(
 	}
 
 	const socket = new TcpWebSocket(websocket);
+	socket.setMaxListeners(15);
 	// Accept the websocket connection after all listeners are set up to avoid missing messages.
 	websocket.accept();
 

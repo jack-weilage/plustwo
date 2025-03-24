@@ -111,10 +111,10 @@
 					borderColor0: "#ff0000",
 				},
 				markArea: {
-					data: broadcasts.map(({ title, start, end }) => [
+					data: broadcasts.map(({ title, startedAt, endedAt }) => [
 						{
 							name: title,
-							xAxis: start,
+							xAxis: startedAt,
 							itemStyle: { color: "rgba(0, 255, 0, 0.1)" },
 							label: {
 								show: true,
@@ -123,7 +123,7 @@
 							},
 						},
 						{
-							xAxis: end ?? new Date(),
+							xAxis: endedAt ?? new Date(),
 						},
 					]),
 				},
