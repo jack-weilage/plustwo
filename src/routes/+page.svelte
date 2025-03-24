@@ -1,88 +1,90 @@
 <script lang="ts">
-	import MainChart from "$lib/components/MainChart.svelte";
+	import { MessageCircle, Tv } from "lucide-svelte";
 
 	let { data } = $props();
-	let candlestick_series = $state([]);
-
-	$effect(() => {
-		let total = 0;
-		candlestick_series = data.sentiment.map(({ minute, plusTwoCount, minusTwoCount }) => {
-			const current_total = total;
-			const difference = plusTwoCount - minusTwoCount;
-
-			total += difference;
-			return {
-				// Add a Z to the end of the string to ensure that the date is parsed as UTC
-				timestamp: new Date(minute + "Z"),
-
-				open: current_total,
-				close: total,
-				lowest: current_total - minusTwoCount,
-				highest: current_total + plusTwoCount,
-			};
-		});
-	});
 </script>
 
 <svelte:head>
 	<title>+2.live</title>
 </svelte:head>
 
-<main class="w-screen min-h-screen h-full py-4 px-2">
-	<section class="flex place-content-center px-4 mb-12">
-		<MainChart broadcasts={data.broadcasts} candlestick={candlestick_series} />
-	</section>
+<main class="h-full min-h-screen w-screen px-2 py-4">
+	<section class="mb-4 px-4">
+		<h2 class="mb-2 text-xl font-semibold">Tracked Broadcasters</h2>
+		<ul>
+			{#each data.broadcaster_list as broadcaster}
+				<li>
+					<a
+						href="/broadcasters/{broadcaster.id}"
+						class="flex items-center justify-between gap-2 rounded-xl border border-gray-500 px-2 py-1 font-bold transition-colors hover:bg-slate-300"
+					>
+						<span class="flex items-center gap-2">
+							<img src={broadcaster.profileImageUrl} alt="" class="size-8 rounded-full" />
+							{broadcaster.name}
+						</span>
 
-	<section class="px-4 mb-6">
-		<p>A website tracking the good and bad jokes of streamer Northernlion, as rated by his chat.</p>
-
-		<h2 class="font-bold">How does this work?</h2>
-		<p>
-			A program reads all chat messages sent, looking for any that start or end with "+2" or "-2".
-			These messages are automatically stored in a database, alongside the chatter who sent them and
-			which broadcast they were sent in.
-		</p>
-	</section>
-
-	<section class="px-4">
-		<h2 class="font-bold text-2xl">Totals</h2>
-
-		<ul class="flex place-content-around">
-			<li class="py-4 px-6 rounded-2xl border border-gray-50">
-				<h3 class="font-semibold text-xl">Messages</h3>
-				{(data.totals.plusTwoCount + data.totals.minusTwoCount).toLocaleString()} messages have been
-				stored. Of these:
-				<ul class="list-disc list-inside">
-					<li class="text-green-400">
-						{data.totals.plusTwoCount.toLocaleString()} messages have a +2 ({(
-							(data.totals.plusTwoCount / (data.totals.plusTwoCount + data.totals.minusTwoCount)) *
-							100
-						).toFixed(2)}%)
-					</li>
-					<li class="text-rose-500">
-						{data.totals.minusTwoCount.toLocaleString()} messages have a -2 ({(
-							(data.totals.minusTwoCount / (data.totals.plusTwoCount + data.totals.minusTwoCount)) *
-							100
-						).toFixed(2)}%)
-					</li>
-				</ul>
-			</li>
-			<li>
-				<h3 class="font-semibold text-xl">Chatters</h3>
-			</li>
-			<li>
-				<h3 class="font-semibold text-xl">Broadcasts</h3>
-			</li>
-			<!-- <li> -->
-			<!-- 	<h3>Average Chatter</h3> -->
-			<!-- 	<p>The average chatter is 87% positive/negative, sending N +2's and N -2's</p> -->
-			<!-- </li> -->
-			<!-- <li> -->
-			<!-- 	<h3>Average Broadcast</h3> -->
-			<!-- 	<p> -->
-			<!-- 		The average broadcast sees NUMBER chatters sending PERCENT% positive sentiment over TIME. -->
-			<!-- 	</p> -->
-			<!-- </li> -->
+						<span class="flex gap-4 py-2">
+							<span class="flex items-center gap-2 text-sm">
+								<Tv size="1.2em" />
+								{broadcaster.broadcastCount}
+							</span>
+							<span class="flex items-center gap-2 text-sm">
+								<MessageCircle size="1.2em" />
+								{broadcaster.messageCount.toLocaleString()}
+							</span>
+						</span>
+					</a>
+				</li>
+			{/each}
 		</ul>
 	</section>
+	<section class="mt-16 px-4">
+		<h2 class="text-lg font-semibold">FAQ</h2>
+		<details>
+			<summary>What is this website?</summary>
+
+			This is a project tracking the quality of Twitch streams, as rated by the chatters watching.
+			No serious conclusions should be made from the information, but there's some pretty graphs!
+		</details>
+		<details>
+			<summary>What is +2/-2?</summary>
+
+			+2 is a meme that originated with the streamer Jerma985, where chatters will vote on the
+			quality of jokes by sending a +2 or -2 in the chat. As considered by this website, a +2 is a
+			positive vote, meaning that the chatter thought a joke was funny, relatable, or agreeable,
+			while a -2 means the opposite.
+		</details>
+	</section>
+
+	<!-- <section class="px-4"> -->
+	<!-- 	<h2 class="text-2xl font-bold">Totals</h2> -->
+	<!---->
+	<!-- 	<ul class="flex place-content-around"> -->
+	<!-- 		<li class="rounded-2xl border border-gray-50 px-6 py-4"> -->
+	<!-- 			<h3 class="text-xl font-semibold">Messages</h3> -->
+	<!-- 			{(data.totals.plusTwoCount + data.totals.minusTwoCount).toLocaleString()} messages have been -->
+	<!-- 			stored. Of these: -->
+	<!-- 			<ul class="list-inside list-disc"> -->
+	<!-- 				<li class="text-green-400"> -->
+	<!-- 					{data.totals.plusTwoCount.toLocaleString()} messages have a +2 ({( -->
+	<!-- 						(data.totals.plusTwoCount / (data.totals.plusTwoCount + data.totals.minusTwoCount)) * -->
+	<!-- 						100 -->
+	<!-- 					).toFixed(2)}%) -->
+	<!-- 				</li> -->
+	<!-- 				<li class="text-rose-500"> -->
+	<!-- 					{data.totals.minusTwoCount.toLocaleString()} messages have a -2 ({( -->
+	<!-- 						(data.totals.minusTwoCount / (data.totals.plusTwoCount + data.totals.minusTwoCount)) * -->
+	<!-- 						100 -->
+	<!-- 					).toFixed(2)}%) -->
+	<!-- 				</li> -->
+	<!-- 			</ul> -->
+	<!-- 		</li> -->
+	<!-- 		<li> -->
+	<!-- 			<h3 class="text-xl font-semibold">Chatters</h3> -->
+	<!-- 		</li> -->
+	<!-- 		<li> -->
+	<!-- 			<h3 class="text-xl font-semibold">Broadcasts</h3> -->
+	<!-- 		</li> -->
+	<!-- 	</ul> -->
+	<!-- </section> -->
 </main>
