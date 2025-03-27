@@ -10,7 +10,6 @@
 	} from "echarts/components";
 	import { use, type EChartsType } from "echarts/core";
 	import { SVGRenderer } from "echarts/renderers";
-	import { ChevronRight } from "lucide-svelte";
 
 	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
 

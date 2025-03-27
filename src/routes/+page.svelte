@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { MessageCircle, Tv } from "lucide-svelte";
+	import MessageCircle from 'lucide-svelte/icons/message-circle'
+	import Tv from 'lucide-svelte/icons/tv'
 	import * as Accordion from "$lib/components/ui/accordion";
 
 	let { data } = $props();
