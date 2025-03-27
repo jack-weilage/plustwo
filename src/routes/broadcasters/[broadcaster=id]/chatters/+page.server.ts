@@ -2,8 +2,11 @@ import { broadcasts, chatters, messages } from "$lib/server/drizzle/schema";
 import { count, eq, sql } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params, parent, locals: { db } }) => {
+export const load: PageServerLoad = async ({ parent, setHeaders, params, locals: { db } }) => {
 	const { broadcaster } = await parent();
+	setHeaders({
+		"Cache-Control": `max-age=${60 * 60}`,
+	});
 
 	const users = await db
 		.select({
