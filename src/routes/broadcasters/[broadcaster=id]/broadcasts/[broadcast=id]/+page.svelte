@@ -6,9 +6,13 @@
 		DataZoomComponent,
 		GridComponent,
 		TooltipComponent,
+		VisualMapComponent,
 	} from "echarts/components";
 	import { use, type EChartsType } from "echarts/core";
 	import { SVGRenderer } from "echarts/renderers";
+	import { ChevronRight } from "lucide-svelte";
+
+	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
 
 	let { data } = $props();
 
@@ -33,6 +37,7 @@
 				highest: currentTotal + plusTwoCount,
 
 				volume: plusTwoCount + minusTwoCount,
+				difference,
 			};
 		});
 	});
@@ -46,6 +51,7 @@
 		GridComponent,
 		DataZoomComponent,
 		TooltipComponent,
+		VisualMapComponent,
 	]);
 </script>
 
@@ -54,11 +60,27 @@
 	<link rel="icon" href={data.broadcaster.profileImageUrl} />
 </svelte:head>
 
-<main class="px-4">
-	<section>
-		<h1>{data.broadcast.title}</h1>
+<main class="mx-auto max-w-4xl px-2 py-4">
+	<section class="py-2">
+		<Breadcrumb.Root>
+			<Breadcrumb.List>
+				<Breadcrumb.Item>
+					<Breadcrumb.Link href="/">Home</Breadcrumb.Link>
+				</Breadcrumb.Item>
+				<Breadcrumb.Separator />
+				<Breadcrumb.Item>
+					<Breadcrumb.Link href="/broadcasters/{data.broadcaster.id}">
+						{data.broadcaster.displayName}
+					</Breadcrumb.Link>
+				</Breadcrumb.Item>
+				<Breadcrumb.Separator />
+				<Breadcrumb.Item>
+					<Breadcrumb.Page>{data.broadcast.title}</Breadcrumb.Page>
+				</Breadcrumb.Item>
+			</Breadcrumb.List>
+		</Breadcrumb.Root>
 	</section>
-	<div class="h-[80dvh]">
+	<section class="h-[80dvh] py-2">
 		<Chart
 			bind:chart
 			options={{
@@ -88,6 +110,17 @@
 					},
 				],
 				tooltip: { trigger: "axis" },
+				visualMap: [
+					{
+						show: false,
+						seriesIndex: 1,
+						dimension: "difference",
+						pieces: [
+							{ lt: 0, color: "red" },
+							{ gte: 0, color: "green" },
+						],
+					},
+				],
 
 				series: [
 					{
@@ -116,5 +149,5 @@
 				],
 			}}
 		/>
-	</div>
+	</section>
 </main>
