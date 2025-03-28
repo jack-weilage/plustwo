@@ -2,6 +2,35 @@
 	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
 
 	let { data } = $props();
+
+	const S_TO_UNIT = {
+		year: 31536000,
+		month: 2592000,
+		day: 86400,
+		hour: 3600,
+		minute: 60,
+		second: 1,
+	};
+	function humanTimestamp(duration: number): string {
+		duration /= 1000;
+
+		const units = [];
+		for (const seconds of [60 * 60, 60, 1]) {
+			const count = Math.floor(duration / seconds);
+			duration -= count * seconds;
+
+			// Add a section if there is some amount of that unit or a unit has already been added before it.
+			if (count > 0 || units.length > 0) {
+				if (count < 10 && units.length > 0) {
+					units.push(`0${count}`);
+				} else {
+					units.push(count.toString());
+				}
+			}
+		}
+
+		return units.join(":");
+	}
 </script>
 
 {#snippet chatterCard(name: string, score: number)}
@@ -21,7 +50,7 @@
 </svelte:head>
 
 <main class="mx-auto max-w-4xl px-4 py-4">
-	<section class="py-2">
+	<section class="flex justify-between py-2">
 		<Breadcrumb.Root>
 			<Breadcrumb.List>
 				<Breadcrumb.Item>
@@ -33,27 +62,33 @@
 				</Breadcrumb.Item>
 			</Breadcrumb.List>
 		</Breadcrumb.Root>
+		<h2 class="font-bold">Broadcasts</h2>
 	</section>
 	<section class="py-2">
-		<h2>Broadcasts</h2>
 		<ol class="grid grid-cols-1 gap-2 sm:grid-cols-2">
 			{#each data.broadcastList as broadcast}
 				<li>
 					<a
 						href="/broadcasters/{data.broadcaster.id}/broadcasts/{broadcast.id}"
-						class="flex items-center justify-between gap-4 rounded-xl border-2 {broadcast.total > 0
-							? 'border-green-500'
-							: 'border-orange-600'} px-4 py-2 transition-colors hover:bg-slate-300 dark:hover:bg-slate-800"
+						class="flex flex-col gap-2 rounded-xl border-2 px-4 py-2 text-sm transition-colors hover:bg-slate-300 dark:hover:bg-slate-800 {broadcast.endedAt ||
+							'border-destructive'}"
 					>
-						<span>{broadcast.title}</span>
-						<span>{broadcast.total >= 0 ? "+" : "-"}{broadcast.total.toLocaleString()}</span>
+						<span class="truncate font-bold">{broadcast.title}</span>
+						<div class="flex flex-nowrap items-center justify-between gap-2">
+							<span>{broadcast.total >= 0 ? "+" : "-"}{broadcast.total.toLocaleString()}</span>
+							{#if broadcast.endedAt}
+								<span>{humanTimestamp(broadcast.endedAt - broadcast.startedAt)}</span>
+							{:else}
+								<span class="text-destructive">Live</span>
+							{/if}
+						</div>
 					</a>
 				</li>
 			{/each}
 		</ol>
 	</section>
-	<section class="py-2">
-		<h2>Chatters</h2>
+	<section class="mt-4 py-2">
+		<h2 class="text-end font-bold">Chatters</h2>
 
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 			<div>

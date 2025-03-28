@@ -1,14 +1,14 @@
 import type { PageServerLoad } from "./$types";
 
 import { broadcasters, broadcasts, messages } from "$lib/server/drizzle/schema";
-import { countDistinct, desc, eq, sql } from "drizzle-orm";
+import { and, countDistinct, desc, eq, exists, isNull, sql } from "drizzle-orm";
 
 export const load: PageServerLoad = async ({ setHeaders, locals: { db } }) => {
 	setHeaders({
 		"Cache-Control": "max-age=10, public",
 	});
 
-	const broadcaster_list = await db
+	const broadcasterList = await db
 		.select({
 			name: broadcasters.displayName,
 			id: broadcasters.id,
@@ -16,6 +16,13 @@ export const load: PageServerLoad = async ({ setHeaders, locals: { db } }) => {
 
 			broadcastCount: countDistinct(broadcasts.id).as("broadcast_count"),
 			messageCount: countDistinct(messages.id).as("message_count"),
+
+			isLive: exists(
+				db
+					.select()
+					.from(broadcasts)
+					.where(and(eq(broadcasts.broadcasterId, broadcasters.id), isNull(broadcasts.endedAt))),
+			),
 		})
 		.from(broadcasters)
 		.leftJoin(broadcasts, eq(broadcasts.broadcasterId, broadcasters.id))
@@ -23,5 +30,5 @@ export const load: PageServerLoad = async ({ setHeaders, locals: { db } }) => {
 		.groupBy(broadcasters.displayName, broadcasters.id)
 		.orderBy(desc(sql`message_count`));
 
-	return { broadcaster_list };
+	return { broadcasterList };
 };

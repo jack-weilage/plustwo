@@ -13,6 +13,9 @@ export const load: PageServerLoad = async ({ parent, setHeaders, params, locals:
 		.select({
 			id: broadcasts.id,
 			title: broadcasts.title,
+			startedAt: broadcasts.startedAt,
+			endedAt: broadcasts.endedAt,
+
 			total: sql<number>`
 				COALESCE(CAST(
 					SUM(CASE WHEN ${messages.messageKind} = 'plus_two' THEN 2 END) -
