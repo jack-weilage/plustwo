@@ -1,6 +1,8 @@
 <script lang="ts">
 	import MessageCircle from "lucide-svelte/icons/message-circle";
 	import Tv from "lucide-svelte/icons/tv";
+	import Radio from "lucide-svelte/icons/radio";
+
 	import * as Accordion from "$lib/components/ui/accordion";
 
 	let { data } = $props();
@@ -14,11 +16,11 @@
 	<section class="mb-4">
 		<h2 class="mb-2 text-xl font-semibold">Tracked Broadcasters</h2>
 		<ul class="flex flex-col gap-2">
-			{#each data.broadcaster_list as broadcaster}
+			{#each data.broadcasterList as broadcaster}
 				<li>
 					<a
 						href="/broadcasters/{broadcaster.id}"
-						class="flex items-center justify-between gap-2 rounded-xl border border-gray-500 px-2 py-1 font-bold transition-colors hover:bg-slate-300 dark:hover:bg-slate-800"
+						class="flex items-center justify-between gap-2 rounded-xl border px-2 py-1 font-bold transition-colors hover:bg-slate-300 dark:hover:bg-slate-800"
 					>
 						<span class="flex items-center gap-2">
 							<img src={broadcaster.profileImageUrl} alt="" class="size-8 rounded-full" />
@@ -26,6 +28,9 @@
 						</span>
 
 						<span class="flex gap-4 py-2">
+							{#if broadcaster.isLive}
+								<Radio size="1.2em" color="red" />
+							{/if}
 							<span class="flex items-center gap-2 text-sm">
 								<Tv size="1.2em" />
 								{broadcaster.broadcastCount}

@@ -13,12 +13,14 @@ export const load: PageServerLoad = async ({ parent, setHeaders, params, locals:
 		.select({
 			id: broadcasts.id,
 			title: broadcasts.title,
+			startedAt: broadcasts.startedAt,
+			endedAt: broadcasts.endedAt,
+
 			total: sql<number>`
 				COALESCE(CAST(
-					SUM(CASE WHEN ${messages.messageKind} = 'plus_two' THEN 2 END) -
-					SUM(CASE WHEN ${messages.messageKind} = 'minus_two' THEN 2 END)
-				AS INT), 0)
-			`,
+					${count(sql`CASE WHEN ${messages.messageKind} = 'plus_two' THEN 1 END`)} -
+					${count(sql`CASE WHEN ${messages.messageKind} = 'minus_two' THEN 1 END`)}
+				AS INT), 0)`,
 		})
 		.from(broadcasts)
 		.where(eq(broadcasts.broadcasterId, +params.broadcaster))
@@ -29,10 +31,11 @@ export const load: PageServerLoad = async ({ parent, setHeaders, params, locals:
 	const countScore = db
 		.select({
 			displayName: chatters.displayName,
-			score:
-				sql<number>`COALESCE(CAST(${count(sql`CASE WHEN ${messages.messageKind} = 'plus_two' THEN 1 END`)} - ${count(sql`CASE WHEN ${messages.messageKind} = 'minus_two' THEN 1 END`)} AS INT), 0)`.as(
-					"score",
-				),
+			score: sql<number>`
+				COALESCE(CAST(
+					${count(sql`CASE WHEN ${messages.messageKind} = 'plus_two' THEN 1 END`)} -
+					${count(sql`CASE WHEN ${messages.messageKind} = 'minus_two' THEN 1 END`)}
+				AS INT), 0)`.as("score"),
 		})
 		.from(messages)
 		.leftJoin(chatters, eq(chatters.id, messages.chatterId))
