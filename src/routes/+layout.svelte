@@ -15,7 +15,7 @@
 		<a href="/">+2.live</a>
 	</div>
 	<div>
-		<button type="button" onclick={toggleMode} class="grid place-items-center">
+		<button type="button" onclick={toggleMode} class="grid place-items-center p-2">
 			<Sun
 				class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
 			/>
