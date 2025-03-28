@@ -15,8 +15,6 @@
 
 	let { data } = $props();
 
-	$inspect(data);
-
 	let candlestickSeries = $state([]);
 	$effect(() => {
 		let total = 0;
@@ -84,7 +82,28 @@
 			bind:chart
 			options={{
 				dataset: [{ source: candlestickSeries }],
-				xAxis: { type: "time" },
+				grid: [
+					{
+						bottom: "30%",
+					},
+					{
+						top: "80%",
+					},
+				],
+				xAxis: [
+					{
+						type: "time",
+					},
+					{
+						type: "time",
+						gridIndex: 1,
+
+						axisLabel: { show: false },
+						axisLine: { onZero: false },
+						axisTick: { show: false },
+						splitLine: { show: false },
+					},
+				],
 				yAxis: [
 					{
 						name: "Total Sentiment",
@@ -92,7 +111,12 @@
 					},
 					{
 						name: "Message Volume",
-						max: 1000,
+						gridIndex: 1,
+
+						axisLabel: { show: false },
+						axisLine: { show: false },
+						axisTick: { show: false },
+						splitLine: { show: false },
 					},
 				],
 
@@ -101,13 +125,18 @@
 						type: "slider",
 						start: 0,
 						end: 100,
+						xAxisIndex: [0, 1],
 					},
 					{
 						type: "inside",
 						start: 0,
 						end: 100,
+						xAxisIndex: [0, 1],
 					},
 				],
+				axisPointer: {
+					link: [{ xAxisIndex: "all" }],
+				},
 				tooltip: { trigger: "axis" },
 				visualMap: [
 					{
@@ -135,6 +164,8 @@
 							borderColor: "green",
 							borderColor0: "red",
 						},
+						xAxisIndex: 0,
+						yAxisIndex: 0,
 					},
 					{
 						name: "Volume",
@@ -143,6 +174,7 @@
 							x: "timestamp",
 							y: "volume",
 						},
+						xAxisIndex: 1,
 						yAxisIndex: 1,
 					},
 				],
