@@ -31,7 +31,7 @@
 {@render children()}
 
 <footer class="border-t border-t-gray-700 px-3 py-4">
-	<p class="mb-2">
+	<p class="mb-2 text-sm">
 		Built with <Heart size="1em" strokeWidth={3} class="mx-0.5 mb-0.5 inline-block" /> by
 		<a
 			href="https://weilage.dev?utm_source=plustwo"
@@ -51,7 +51,7 @@
 			>Cloudflare</a
 		>.
 	</p>
-	<p>
+	<p class="text-sm">
 		Notice something broken/wrong? Let me know by <a
 			href="https://github.com/jack-weilage/plustwo/issues"
 			target="_blank"
