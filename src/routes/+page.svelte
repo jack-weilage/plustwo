@@ -1,6 +1,6 @@
 <script lang="ts">
-	import MessageCircle from 'lucide-svelte/icons/message-circle'
-	import Tv from 'lucide-svelte/icons/tv'
+	import MessageCircle from "lucide-svelte/icons/message-circle";
+	import Tv from "lucide-svelte/icons/tv";
 	import * as Accordion from "$lib/components/ui/accordion";
 
 	let { data } = $props();
@@ -10,7 +10,7 @@
 	<title>+2.live</title>
 </svelte:head>
 
-<main class="mx-auto h-full min-h-screen max-w-4xl px-2 py-4">
+<main class="mx-auto h-full min-h-screen max-w-4xl px-4 py-4">
 	<section class="mb-4">
 		<h2 class="mb-2 text-xl font-semibold">Tracked Broadcasters</h2>
 		<ul class="flex flex-col gap-2">

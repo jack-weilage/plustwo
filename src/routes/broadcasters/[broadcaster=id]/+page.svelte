@@ -20,7 +20,7 @@
 	<link rel="icon" href={data.broadcaster.profileImageUrl} />
 </svelte:head>
 
-<main class="mx-auto max-w-4xl px-2 py-4">
+<main class="mx-auto max-w-4xl px-4 py-4">
 	<section class="py-2">
 		<Breadcrumb.Root>
 			<Breadcrumb.List>
@@ -36,12 +36,12 @@
 	</section>
 	<section class="py-2">
 		<h2>Broadcasts</h2>
-		<ol class="grid grid-cols-2 gap-2">
+		<ol class="grid grid-cols-1 gap-2 sm:grid-cols-2">
 			{#each data.broadcastList as broadcast}
 				<li>
 					<a
 						href="/broadcasters/{data.broadcaster.id}/broadcasts/{broadcast.id}"
-						class="flex justify-between gap-4 rounded-xl border-2 {broadcast.total > 0
+						class="flex items-center justify-between gap-4 rounded-xl border-2 {broadcast.total > 0
 							? 'border-green-500'
 							: 'border-orange-600'} px-4 py-2 transition-colors hover:bg-slate-300 dark:hover:bg-slate-800"
 					>
@@ -55,7 +55,7 @@
 	<section class="py-2">
 		<h2>Chatters</h2>
 
-		<div class="grid grid-cols-2 gap-4">
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 			<div>
 				<h3>Most Positive</h3>
 				<ol class="flex flex-col gap-2">
