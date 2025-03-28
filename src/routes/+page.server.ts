@@ -1,7 +1,7 @@
 import type { PageServerLoad } from "./$types";
 
 import { broadcasters, broadcasts, messages } from "$lib/server/drizzle/schema";
-import { desc, eq, sql } from "drizzle-orm";
+import { countDistinct, desc, eq, sql } from "drizzle-orm";
 
 export const load: PageServerLoad = async ({ setHeaders, locals: { db } }) => {
 	setHeaders({
@@ -14,10 +14,8 @@ export const load: PageServerLoad = async ({ setHeaders, locals: { db } }) => {
 			id: broadcasters.id,
 			profileImageUrl: broadcasters.profileImageUrl,
 
-			broadcastCount: sql<number>`COALESCE(CAST(COUNT(DISTINCT ${broadcasts.id}) AS INT), 0)`,
-			messageCount: sql<number>`COALESCE(CAST(COUNT(DISTINCT ${messages.id}) AS INT), 0)`.as(
-				"message_count",
-			),
+			broadcastCount: countDistinct(broadcasts.id).as("broadcast_count"),
+			messageCount: countDistinct(messages.id).as("message_count"),
 		})
 		.from(broadcasters)
 		.leftJoin(broadcasts, eq(broadcasts.broadcasterId, broadcasters.id))
