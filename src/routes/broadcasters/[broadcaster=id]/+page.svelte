@@ -3,14 +3,6 @@
 
 	let { data } = $props();
 
-	const S_TO_UNIT = {
-		year: 31536000,
-		month: 2592000,
-		day: 86400,
-		hour: 3600,
-		minute: 60,
-		second: 1,
-	};
 	function humanTimestamp(duration: number): string {
 		duration /= 1000;
 
@@ -34,13 +26,11 @@
 </script>
 
 {#snippet chatterCard(name: string, score: number)}
-	<li
-		class="flex justify-between rounded-xl border-2 {score > 0
-			? 'border-green-500'
-			: 'border-orange-600'} px-4 py-2"
-	>
-		<span>@{name}</span>
-		<span>{score >= 0 ? "+" : ""}{score.toLocaleString()}</span>
+	<li class="flex justify-between rounded-xl border-2 px-4 py-2 text-sm">
+		<span>{name}</span>
+		<span class={score > 0 ? "text-green-600" : "text-orange-600"}
+			>{score >= 0 ? "+" : ""}{score.toLocaleString()}</span
+		>
 	</li>
 {/snippet}
 
@@ -77,7 +67,9 @@
 						<div class="flex flex-nowrap items-center justify-between gap-2">
 							<span>{broadcast.total >= 0 ? "+" : "-"}{broadcast.total.toLocaleString()}</span>
 							{#if broadcast.endedAt}
-								<span>{humanTimestamp(broadcast.endedAt - broadcast.startedAt)}</span>
+								<span class="text-muted-foreground">
+									{humanTimestamp(broadcast.endedAt - broadcast.startedAt)}
+								</span>
 							{:else}
 								<span class="text-destructive">Live</span>
 							{/if}
