@@ -6,7 +6,7 @@ import { broadcasters, broadcasts, chatters, messages } from "$lib/server/drizzl
 export const load: PageServerLoad = async ({ parent, setHeaders, params, locals: { db } }) => {
 	const { broadcaster } = await parent();
 	setHeaders({
-		"Cache-Control": "max-age=60",
+		"Cache-Control": "max-age=60, public",
 	});
 
 	const broadcastList = await db

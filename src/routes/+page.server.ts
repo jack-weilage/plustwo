@@ -5,7 +5,7 @@ import { desc, eq, sql } from "drizzle-orm";
 
 export const load: PageServerLoad = async ({ setHeaders, locals: { db } }) => {
 	setHeaders({
-		"Cache-Control": "max-age=10",
+		"Cache-Control": "max-age=10, public",
 	});
 
 	const broadcaster_list = await db
