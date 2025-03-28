@@ -1,25 +1,29 @@
 import type { PageServerLoad } from "./$types";
 
 import { broadcasters, broadcasts, messages } from "$lib/server/drizzle/schema";
-import { eq, sql } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 
-export const load: PageServerLoad = async ({ locals: { db } }) => {
+export const load: PageServerLoad = async ({ setHeaders, locals: { db } }) => {
+	setHeaders({
+		"Cache-Control": "max-age=10",
+	});
+
 	const broadcaster_list = await db
 		.select({
 			name: broadcasters.displayName,
 			id: broadcasters.id,
 			profileImageUrl: broadcasters.profileImageUrl,
 
-			broadcastCount: sql<number>`CAST(COUNT(DISTINCT ${broadcasts.id}) AS INT)`.as(
-				"broadcast_count",
+			broadcastCount: sql<number>`COALESCE(CAST(COUNT(DISTINCT ${broadcasts.id}) AS INT), 0)`,
+			messageCount: sql<number>`COALESCE(CAST(COUNT(DISTINCT ${messages.id}) AS INT), 0)`.as(
+				"message_count",
 			),
-			messageCount: sql<number>`CAST(COUNT(DISTINCT ${messages.id}) AS INT)`,
 		})
 		.from(broadcasters)
 		.leftJoin(broadcasts, eq(broadcasts.broadcasterId, broadcasters.id))
 		.leftJoin(messages, eq(messages.broadcastId, broadcasts.id))
 		.groupBy(broadcasters.displayName, broadcasters.id)
-		.orderBy(sql`broadcast_count`);
+		.orderBy(desc(sql`message_count`));
 
 	return { broadcaster_list };
 };

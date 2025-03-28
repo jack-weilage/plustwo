@@ -14,6 +14,8 @@
 	} from "echarts/components";
 	import ecStat from "echarts-stat";
 
+	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
+
 	let { data } = $props();
 
 	use([
@@ -236,8 +238,27 @@
 	}
 </script>
 
-<main>
-	<h1>{data.broadcaster.displayName}'s Chatters</h1>
+<main class="mx-auto max-w-4xl px-4 py-4">
+	<section class="py-2">
+		<Breadcrumb.Root>
+			<Breadcrumb.List>
+				<Breadcrumb.Item>
+					<Breadcrumb.Link href="/">Home</Breadcrumb.Link>
+				</Breadcrumb.Item>
+				<Breadcrumb.Separator />
+				<Breadcrumb.Item>
+					<Breadcrumb.Link href="/broadcasters/{data.broadcaster.id}">
+						{data.broadcaster.displayName}
+					</Breadcrumb.Link>
+				</Breadcrumb.Item>
+				<Breadcrumb.Separator />
+				<Breadcrumb.Item>
+					<Breadcrumb.Page>Chatters</Breadcrumb.Page>
+				</Breadcrumb.Item>
+			</Breadcrumb.List>
+		</Breadcrumb.Root>
+	</section>
+
 	<button
 		type="button"
 		onclick={() => {
