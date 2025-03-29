@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ChevronRight from "lucide-svelte/icons/chevron-right";
+
 	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
 
 	let { data } = $props();
@@ -60,15 +62,15 @@
 				<li>
 					<a
 						href="/broadcasters/{data.broadcaster.id}/broadcasts/{broadcast.id}"
-						class="flex flex-col gap-2 rounded-xl border-2 px-4 py-2 text-sm transition-colors hover:bg-slate-300 dark:hover:bg-slate-800 {broadcast.endedAt ||
+						class="broadcast hover:bg-foreground hover:text-background flex flex-col gap-2 rounded-xl border-2 px-4 py-2 text-sm transition-colors {broadcast.endedAt ||
 							'border-destructive'}"
 					>
 						<span class="truncate font-bold">{broadcast.title}</span>
 						<div class="flex flex-nowrap items-center justify-between gap-2">
 							<span>{broadcast.total >= 0 ? "+" : "-"}{broadcast.total.toLocaleString()}</span>
 							{#if broadcast.endedAt}
-								<span class="text-muted-foreground">
-									{humanTimestamp(broadcast.endedAt - broadcast.startedAt)}
+								<span class="timestamp text-muted-foreground">
+									{humanTimestamp(+broadcast.endedAt - +broadcast.startedAt)}
 								</span>
 							{:else}
 								<span class="text-destructive">Live</span>
@@ -78,21 +80,29 @@
 				</li>
 			{/each}
 		</ol>
+
+		<!-- <a -->
+		<!-- 	href="/broadcasters/{data.broadcaster.id}/chatters" -->
+		<!-- 	class="text-background bg-foreground hover:bg-background hover:text-foreground mt-4 flex flex-nowrap items-center gap-1 rounded-xl px-4 py-2" -->
+		<!-- > -->
+		<!-- 	View all -->
+		<!-- 	<ChevronRight size="1.2em" /> -->
+		<!-- </a> -->
 	</section>
 	<section class="mt-4 py-2">
 		<h2 class="text-end font-bold">Chatters</h2>
 
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-			<div>
-				<h3>Most Positive</h3>
+			<div class="flex flex-col gap-2">
+				<h3 class="font-bold">Most Positive</h3>
 				<ol class="flex flex-col gap-2">
 					{#each data.bestChatters as chatter}
 						{@render chatterCard(chatter.displayName, chatter.score)}
 					{/each}
 				</ol>
 			</div>
-			<div>
-				<h3>Most Negative</h3>
+			<div class="flex flex-col gap-2">
+				<h3 class="font-bold">Most Negative</h3>
 				<ol class="flex flex-col gap-2">
 					{#each data.worstChatters as chatter}
 						{@render chatterCard(chatter.displayName, chatter.score)}
@@ -100,5 +110,19 @@
 				</ol>
 			</div>
 		</div>
+
+		<a
+			href="/broadcasters/{data.broadcaster.id}/chatters"
+			class="text-background bg-foreground hover:bg-background hover:text-foreground mt-4 flex flex-nowrap items-center gap-1 rounded-xl px-4 py-2"
+		>
+			View all
+			<ChevronRight size="1.2em" />
+		</a>
 	</section>
 </main>
+
+<style>
+	.broadcast:hover .timestamp {
+		color: var(--muted-foreground);
+	}
+</style>

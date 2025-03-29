@@ -82,14 +82,7 @@
 			bind:chart
 			options={{
 				dataset: [{ source: candlestickSeries }],
-				grid: [
-					{
-						bottom: "30%",
-					},
-					{
-						top: "80%",
-					},
-				],
+				grid: [{ bottom: "30%" }, { top: "80%" }],
 				xAxis: [
 					{
 						type: "time",

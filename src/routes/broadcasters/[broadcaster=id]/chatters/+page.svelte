@@ -238,6 +238,11 @@
 	}
 </script>
 
+<svelte:head>
+	<title>+2 | {data.broadcaster.displayName} | Chatters</title>
+	<link rel="icon" href={data.broadcaster.profileImageUrl} />
+</svelte:head>
+
 <main class="mx-auto max-w-4xl px-4 py-4">
 	<section class="py-2">
 		<Breadcrumb.Root>

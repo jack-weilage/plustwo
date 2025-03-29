@@ -20,7 +20,7 @@
 				<li>
 					<a
 						href="/broadcasters/{broadcaster.id}"
-						class="flex items-center justify-between gap-2 rounded-xl border px-2 py-1 font-bold transition-colors hover:bg-slate-300 dark:hover:bg-slate-800"
+						class="hover:bg-foreground hover:text-background flex items-center justify-between gap-2 rounded-xl border px-2 py-1 font-bold transition-colors"
 					>
 						<span class="flex items-center gap-2">
 							<img src={broadcaster.profileImageUrl} alt="" class="size-8 rounded-full" />
