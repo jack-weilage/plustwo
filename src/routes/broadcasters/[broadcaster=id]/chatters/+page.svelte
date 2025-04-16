@@ -15,6 +15,7 @@
 	import ecStat from "echarts-stat";
 
 	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
+	import Seo from "$lib/components/Seo.svelte";
 
 	let { data } = $props();
 
@@ -238,10 +239,10 @@
 	}
 </script>
 
-<svelte:head>
-	<title>+2 | {data.broadcaster.displayName} | Chatters</title>
-	<link rel="icon" href={data.broadcaster.profileImageUrl} />
-</svelte:head>
+<Seo
+	title="+2 | {data.broadcaster.displayName} | Chatters"
+	icon={data.broadcaster.profileImageUrl!}
+/>
 
 <main class="mx-auto max-w-4xl px-4 py-4">
 	<section class="py-2">

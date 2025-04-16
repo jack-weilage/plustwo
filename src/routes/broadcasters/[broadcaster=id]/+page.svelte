@@ -2,6 +2,7 @@
 	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 
 	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
+	import Seo from "$lib/components/Seo.svelte";
 
 	let { data } = $props();
 
@@ -36,10 +37,7 @@
 	</li>
 {/snippet}
 
-<svelte:head>
-	<title>+2 | {data.broadcaster.displayName}</title>
-	<link rel="icon" href={data.broadcaster.profileImageUrl} />
-</svelte:head>
+<Seo title="+2 | {data.broadcaster.displayName}" icon={data.broadcaster.profileImageUrl!} />
 
 <main class="mx-auto max-w-4xl px-4 py-4">
 	<section class="flex justify-between py-2">

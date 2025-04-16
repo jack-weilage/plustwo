@@ -4,13 +4,15 @@
 	import Radio from "@lucide/svelte/icons/radio";
 
 	import * as Accordion from "$lib/components/ui/accordion";
+	import Seo from "$lib/components/Seo.svelte";
 
 	let { data } = $props();
 </script>
 
-<svelte:head>
-	<title>+2.live</title>
-</svelte:head>
+<Seo
+	title="+2.live"
+	description="+2.live is a website that tracks the quality of Twitch streams and the jokes made within them, as rated by the chatters watching."
+/>
 
 <main class="mx-auto h-full min-h-screen max-w-4xl px-4 py-4">
 	<section class="mb-4">
