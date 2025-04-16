@@ -1,9 +1,9 @@
 <script lang="ts">
 	import "../app.css";
 
-	import Heart from "lucide-svelte/icons/heart";
-	import Sun from "lucide-svelte/icons/sun";
-	import Moon from "lucide-svelte/icons/moon";
+	import Heart from "@lucide/svelte/icons/heart";
+	import Sun from "@lucide/svelte/icons/sun";
+	import Moon from "@lucide/svelte/icons/moon";
 
 	import { ModeWatcher, toggleMode } from "mode-watcher";
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import MessageCircle from "lucide-svelte/icons/message-circle";
-	import Tv from "lucide-svelte/icons/tv";
-	import Radio from "lucide-svelte/icons/radio";
+	import MessageCircle from "@lucide/svelte/icons/message-circle";
+	import Tv from "@lucide/svelte/icons/tv";
+	import Radio from "@lucide/svelte/icons/radio";
 
 	import * as Accordion from "$lib/components/ui/accordion";
 

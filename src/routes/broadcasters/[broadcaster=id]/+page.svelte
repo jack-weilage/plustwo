@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ChevronRight from "lucide-svelte/icons/chevron-right";
+	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 
 	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
 

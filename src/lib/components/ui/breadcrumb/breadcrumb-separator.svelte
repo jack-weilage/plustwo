@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HTMLLiAttributes } from "svelte/elements";
-	import ChevronRight from "lucide-svelte/icons/chevron-right";
+	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 	import { cn } from "$lib/shadcn-utils.js";
 
 	type $$Props = HTMLLiAttributes & {

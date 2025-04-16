@@ -17,6 +17,7 @@
 		"db:studio": "drizzle-kit studio"
 	},
 	"devDependencies": {
+		"@lucide/svelte": "^0.488.0",
 		"@sveltejs/adapter-cloudflare": "^5.0.3",
 		"@sveltejs/kit": "^2.19.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
@@ -26,7 +27,6 @@
 		"drizzle-kit": "^0.30.2",
 		"echarts": "^5.6.0",
 		"echarts-stat": "^1.2.0",
-		"lucide-svelte": "^0.484.0",
 		"mode-watcher": "^0.5.1",
 		"prettier": "^3.5.3",
 		"prettier-plugin-svelte": "^3.3.3",
