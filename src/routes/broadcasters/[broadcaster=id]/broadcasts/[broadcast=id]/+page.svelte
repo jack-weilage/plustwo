@@ -72,6 +72,12 @@
 				</Breadcrumb.Item>
 				<Breadcrumb.Separator />
 				<Breadcrumb.Item>
+					<Breadcrumb.Link href="/broadcasters/{data.broadcaster.id}/broadcasts">
+						Broadcasts
+					</Breadcrumb.Link>
+				</Breadcrumb.Item>
+				<Breadcrumb.Separator />
+				<Breadcrumb.Item>
 					<Breadcrumb.Page>{data.broadcast.title}</Breadcrumb.Page>
 				</Breadcrumb.Item>
 			</Breadcrumb.List>
