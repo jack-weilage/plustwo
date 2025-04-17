@@ -22,7 +22,7 @@
 				<li>
 					<a
 						href="/broadcasters/{broadcaster.id}"
-						class="hover:bg-foreground hover:text-background flex items-center justify-between gap-2 rounded-xl border px-2 py-1 font-bold transition-colors"
+						class="hover:bg-foreground hover:text-background flex items-center justify-between gap-2 rounded-xl px-2 py-1 font-bold shadow transition-colors"
 					>
 						<span class="flex items-center gap-2">
 							<img src={broadcaster.profileImageUrl} alt="" class="size-8 rounded-full" />
@@ -53,7 +53,7 @@
 			<Accordion.Item value="1">
 				<Accordion.Trigger>What is this website?</Accordion.Trigger>
 				<Accordion.Content>
-					This is a project tracking the quality of Twitch streams and the jokes made within them,
+					This is a website tracking the quality of Twitch streams and the jokes made within them,
 					as rated by the chatters watching. No serious conclusions can be made from the
 					information, but there's some pretty graphs!
 				</Accordion.Content>
