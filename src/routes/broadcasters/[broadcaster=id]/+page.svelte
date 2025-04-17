@@ -3,6 +3,7 @@
 
 	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
 	import Seo from "$lib/components/Seo.svelte";
+	import BroadcastPreview from "$lib/components/BroadcastPreview.svelte";
 
 	let { data } = $props();
 
@@ -29,11 +30,11 @@
 </script>
 
 {#snippet chatterCard(name: string, score: number)}
-	<li class="flex justify-between rounded-xl border-2 px-4 py-2 text-sm">
+	<li class="flex justify-between rounded-xl px-4 py-2 text-sm shadow">
 		<span>{name}</span>
-		<span class={score > 0 ? "text-green-600" : "text-orange-600"}
-			>{score >= 0 ? "+" : ""}{score.toLocaleString()}</span
-		>
+		<span class={score > 0 ? "text-green-600" : "text-orange-600"}>
+			{score >= 0 ? "+" : ""}{score.toLocaleString()}
+		</span>
 	</li>
 {/snippet}
 
@@ -52,40 +53,42 @@
 				</Breadcrumb.Item>
 			</Breadcrumb.List>
 		</Breadcrumb.Root>
+
 		<h2 class="font-bold">Broadcasts</h2>
 	</section>
 	<section class="py-2">
-		<ol class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+		<ul class="grid grid-cols-1 gap-2 sm:grid-cols-2">
 			{#each data.broadcastList as broadcast}
 				<li>
-					<a
-						href="/broadcasters/{data.broadcaster.id}/broadcasts/{broadcast.id}"
-						class="broadcast hover:bg-foreground hover:text-background flex flex-col gap-2 rounded-xl border-2 px-4 py-2 text-sm transition-colors {broadcast.endedAt ||
-							'border-destructive'}"
-					>
-						<span class="truncate font-bold">{broadcast.title}</span>
-						<div class="flex flex-nowrap items-center justify-between gap-2">
-							<span>{broadcast.total >= 0 ? "+" : "-"}{broadcast.total.toLocaleString()}</span>
-							{#if broadcast.endedAt}
-								<span class="timestamp text-muted-foreground">
-									{humanTimestamp(+broadcast.endedAt - +broadcast.startedAt)}
-								</span>
-							{:else}
-								<span class="text-destructive">Live</span>
-							{/if}
-						</div>
-					</a>
+					<BroadcastPreview {broadcast} broadcaster={data.broadcaster} />
+					<!-- <a -->
+					<!-- 	href="/broadcasters/{data.broadcaster.id}/broadcasts/{broadcast.id}" -->
+					<!-- 	class="broadcast hover:bg-foreground hover:text-background flex flex-col gap-2 rounded-xl px-4 py-2 text-sm shadow transition-colors {broadcast.endedAt || -->
+					<!-- 		'border-destructive border-2'}" -->
+					<!-- > -->
+					<!-- 	<span class="truncate font-bold">{broadcast.title}</span> -->
+					<!-- 	<div class="flex flex-nowrap items-center justify-between gap-2"> -->
+					<!-- 		<span>{broadcast.total >= 0 ? "+" : ""}{broadcast.total.toLocaleString()}</span> -->
+					<!-- 		{#if broadcast.endedAt} -->
+					<!-- 			<span class="timestamp text-muted-foreground"> -->
+					<!-- 				{humanTimestamp(+broadcast.endedAt - +broadcast.startedAt)} -->
+					<!-- 			</span> -->
+					<!-- 		{:else} -->
+					<!-- 			<span class="text-destructive">Live</span> -->
+					<!-- 		{/if} -->
+					<!-- 	</div> -->
+					<!-- </a> -->
 				</li>
 			{/each}
-		</ol>
+		</ul>
 
-		<!-- <a -->
-		<!-- 	href="/broadcasters/{data.broadcaster.id}/chatters" -->
-		<!-- 	class="text-background bg-foreground hover:bg-background hover:text-foreground mt-4 flex flex-nowrap items-center gap-1 rounded-xl px-4 py-2" -->
-		<!-- > -->
-		<!-- 	View all -->
-		<!-- 	<ChevronRight size="1.2em" /> -->
-		<!-- </a> -->
+		<a
+			href="/broadcasters/{data.broadcaster.id}/broadcasts"
+			class="text-background bg-foreground hover:bg-background hover:text-foreground mt-4 flex flex-nowrap items-center gap-1 rounded-xl px-4 py-2"
+		>
+			View all
+			<ChevronRight size="1.2em" />
+		</a>
 	</section>
 	<section class="mt-4 py-2">
 		<h2 class="text-end font-bold">Chatters</h2>

@@ -6,7 +6,7 @@ import { broadcasters, broadcasts, chatters, messages } from "$lib/server/drizzl
 export const load: PageServerLoad = async ({ parent, setHeaders, params, locals: { db } }) => {
 	const { broadcaster } = await parent();
 	setHeaders({
-		"Cache-Control": "max-age=60, public",
+		"Cache-Control": "max-age=10, public",
 	});
 
 	const broadcastList = await db
@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ parent, setHeaders, params, locals:
 			startedAt: broadcasts.startedAt,
 			endedAt: broadcasts.endedAt,
 
-			total: sql<number>`
+			score: sql<number>`
 				COALESCE(CAST(
 					${count(sql`CASE WHEN ${messages.messageKind} = 'plus_two' THEN 1 END`)} -
 					${count(sql`CASE WHEN ${messages.messageKind} = 'minus_two' THEN 1 END`)}
@@ -26,7 +26,8 @@ export const load: PageServerLoad = async ({ parent, setHeaders, params, locals:
 		.where(eq(broadcasts.broadcasterId, +params.broadcaster))
 		.leftJoin(messages, eq(messages.broadcastId, broadcasts.id))
 		.groupBy(broadcasts.id)
-		.orderBy(desc(broadcasts.startedAt));
+		.orderBy(desc(broadcasts.startedAt))
+		.limit(10);
 
 	const countScore = db
 		.select({
