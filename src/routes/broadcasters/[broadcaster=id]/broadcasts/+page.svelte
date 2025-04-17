@@ -3,13 +3,16 @@
 	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
 	import * as Pagination from "$lib/components/ui/pagination/index.js";
+	import BroadcastPreview from "$lib/components/BroadcastPreview.svelte";
+	import Seo from "$lib/components/Seo.svelte";
 
 	import { page as pageStore } from "$app/state";
 	import { goto } from "$app/navigation";
-	import BroadcastPreview from "$lib/components/BroadcastPreview.svelte";
 
 	let { data } = $props();
 </script>
+
+<Seo title="+2 | {data.broadcaster.displayName} | Broadcasts (Page {data.pagination.page})" />
 
 <main class="mx-auto max-w-4xl px-4 py-4">
 	<section class="flex justify-between py-2">

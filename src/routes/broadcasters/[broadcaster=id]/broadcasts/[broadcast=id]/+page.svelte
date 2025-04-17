@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Chart from "$lib/echart/Chart.svelte";
+	import Seo from "$lib/components/Seo.svelte";
+
 	import { BarChart, CandlestickChart } from "echarts/charts";
 	import {
 		DatasetComponent,
@@ -52,10 +54,7 @@
 	]);
 </script>
 
-<svelte:head>
-	<title>+2 | {data.broadcast.title}</title>
-	<link rel="icon" href={data.broadcaster.profileImageUrl} />
-</svelte:head>
+<Seo title="+2 | {data.broadcast.title}" icon={data.broadcaster.profileImageUrl!} />
 
 <main class="mx-auto max-w-4xl px-4 py-4">
 	<section class="py-2">
