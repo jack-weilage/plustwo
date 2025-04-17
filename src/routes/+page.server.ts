@@ -3,11 +3,7 @@ import type { PageServerLoad } from "./$types";
 import { broadcasters, broadcasts, messages } from "$lib/server/drizzle/schema";
 import { and, countDistinct, desc, eq, exists, isNull, sql } from "drizzle-orm";
 
-export const load: PageServerLoad = async ({ setHeaders, locals: { db } }) => {
-	setHeaders({
-		"Cache-Control": "max-age=10, public",
-	});
-
+export const load: PageServerLoad = async ({ locals: { db } }) => {
 	const broadcasterList = await db
 		.select({
 			name: broadcasters.displayName,

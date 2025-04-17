@@ -4,11 +4,8 @@ import type { PageServerLoad } from "./$types";
 
 const ITEMS_PER_PAGE = 10;
 
-export const load: PageServerLoad = async ({ parent, setHeaders, params, url, locals: { db } }) => {
+export const load: PageServerLoad = async ({ parent, params, url, locals: { db } }) => {
 	const { broadcaster } = await parent();
-	setHeaders({
-		"Cache-Control": `max-age=10, public`,
-	});
 
 	const broadcastCount = await db
 		.select({ count: count(broadcasts.id) })
