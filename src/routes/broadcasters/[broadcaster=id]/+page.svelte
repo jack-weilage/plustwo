@@ -40,7 +40,7 @@
 
 <Seo title="+2 | {data.broadcaster.displayName}" icon={data.broadcaster.profileImageUrl!} />
 
-<main class="mx-auto max-w-4xl px-4 py-4">
+<main class="mx-auto min-h-screen max-w-4xl px-4 py-4">
 	<section class="flex justify-between py-2">
 		<Breadcrumb.Root>
 			<Breadcrumb.List>
