@@ -39,8 +39,9 @@
 
 <a
 	href="/broadcasters/{broadcaster.id}/broadcasts/{broadcast.id}"
-	class="hover:bg-foreground hover:text-background flex flex-col gap-2 rounded-xl px-4 py-2 text-sm shadow transition-colors {broadcast.endedAt ||
-		'border-destructive border-2'}"
+	class="hover:bg-foreground hover:text-background flex flex-col gap-2 rounded-xl border-2 px-4 py-2 text-sm shadow transition-colors {broadcast.endedAt
+		? 'border-transparent'
+		: 'border-destructive '}"
 >
 	<span class="truncate font-bold">{broadcast.title}</span>
 	<div class="flex flex-nowrap items-center justify-between gap-2">
