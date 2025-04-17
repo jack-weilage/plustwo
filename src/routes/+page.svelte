@@ -49,7 +49,7 @@
 	</section>
 	<section class="mt-16">
 		<h2 class="text-lg font-semibold">FAQ</h2>
-		<Accordion.Root>
+		<Accordion.Root type="multiple">
 			<Accordion.Item value="1">
 				<Accordion.Trigger>What is this website?</Accordion.Trigger>
 				<Accordion.Content>

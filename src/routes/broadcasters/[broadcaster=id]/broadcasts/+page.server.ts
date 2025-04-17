@@ -44,6 +44,5 @@ export const load: PageServerLoad = async ({ parent, params, url, locals: { db }
 			page,
 			perPage: ITEMS_PER_PAGE,
 		},
-		page,
 	};
 };

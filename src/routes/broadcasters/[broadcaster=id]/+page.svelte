@@ -61,23 +61,6 @@
 			{#each data.broadcastList as broadcast}
 				<li>
 					<BroadcastPreview {broadcast} broadcaster={data.broadcaster} />
-					<!-- <a -->
-					<!-- 	href="/broadcasters/{data.broadcaster.id}/broadcasts/{broadcast.id}" -->
-					<!-- 	class="broadcast hover:bg-foreground hover:text-background flex flex-col gap-2 rounded-xl px-4 py-2 text-sm shadow transition-colors {broadcast.endedAt || -->
-					<!-- 		'border-destructive border-2'}" -->
-					<!-- > -->
-					<!-- 	<span class="truncate font-bold">{broadcast.title}</span> -->
-					<!-- 	<div class="flex flex-nowrap items-center justify-between gap-2"> -->
-					<!-- 		<span>{broadcast.total >= 0 ? "+" : ""}{broadcast.total.toLocaleString()}</span> -->
-					<!-- 		{#if broadcast.endedAt} -->
-					<!-- 			<span class="timestamp text-muted-foreground"> -->
-					<!-- 				{humanTimestamp(+broadcast.endedAt - +broadcast.startedAt)} -->
-					<!-- 			</span> -->
-					<!-- 		{:else} -->
-					<!-- 			<span class="text-destructive">Live</span> -->
-					<!-- 		{/if} -->
-					<!-- 	</div> -->
-					<!-- </a> -->
 				</li>
 			{/each}
 		</ul>
