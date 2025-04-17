@@ -5,7 +5,7 @@ import type { PageServerLoad } from "./$types";
 export const load: PageServerLoad = async ({ parent, setHeaders, params, locals: { db } }) => {
 	const { broadcaster } = await parent();
 	setHeaders({
-		"Cache-Control": `max-age=${60 * 60}, public`,
+		"Cache-Control": `max-age=60, public`,
 	});
 
 	const users = await db
