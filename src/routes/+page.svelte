@@ -62,11 +62,15 @@
 				<Accordion.Trigger>What is +2/-2?</Accordion.Trigger>
 				<Accordion.Content>
 					+2 is a meme that originated with the streamer <a
+						target="_blank"
 						href="https://twitch.tv/jerma985"
 						class="font-bold hover:underline">Jerma985</a
-					>, where chatters will vote on the quality of jokes by sending a +2 or -2 in the chat. As
-					considered by this website, a +2 is a positive vote, meaning that the chatter thought a
-					joke was funny, relatable, or agreeable, while a -2 means the opposite.
+					>, where chatters will vote on the quality of jokes by sending a +2 or -2 in the chat (<a
+						target="_blank"
+						href="https://jerma-lore.fandom.com/wiki/%2B2_and_-2"
+						class="font-bold hover:underline">source</a
+					>). As considered by this website, a +2 is a positive vote, meaning that the chatter
+					thought a joke was funny, relatable, or agreeable, while a -2 means the opposite.
 				</Accordion.Content>
 			</Accordion.Item>
 			<Accordion.Item value="3">
@@ -84,6 +88,7 @@
 						For streams started before the watcher was running, a separate program has processed
 						Twitch's archive of past streams. Unfortunately, this archive only dates back 60 days
 						for Twitch Partners, and 7 days for most other broadcasters (<a
+							target="_blank"
 							href="https://help.twitch.tv/s/article/video-on-demand?language=en_US#limit"
 							class="font-bold hover:underline">source</a
 						>). This means that data for broadcasters essentially begins at the start of 2025.
