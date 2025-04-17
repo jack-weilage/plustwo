@@ -1,32 +1,10 @@
 <script lang="ts">
-	import ChevronRight from "@lucide/svelte/icons/chevron-right";
-
 	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
 	import Seo from "$lib/components/Seo.svelte";
 	import BroadcastPreview from "$lib/components/BroadcastPreview.svelte";
+	import { Button } from "$lib/components/ui/button";
 
 	let { data } = $props();
-
-	function humanTimestamp(duration: number): string {
-		duration /= 1000;
-
-		const units = [];
-		for (const seconds of [60 * 60, 60, 1]) {
-			const count = Math.floor(duration / seconds);
-			duration -= count * seconds;
-
-			// Add a section if there is some amount of that unit or a unit has already been added before it.
-			if (count > 0 || units.length > 0) {
-				if (count < 10 && units.length > 0) {
-					units.push(`0${count}`);
-				} else {
-					units.push(count.toString());
-				}
-			}
-		}
-
-		return units.join(":");
-	}
 </script>
 
 {#snippet chatterCard(name: string, score: number)}
@@ -65,13 +43,9 @@
 			{/each}
 		</ul>
 
-		<a
-			href="/broadcasters/{data.broadcaster.id}/broadcasts"
-			class="text-background bg-foreground hover:bg-background hover:text-foreground mt-4 flex flex-nowrap items-center gap-1 rounded-xl px-4 py-2"
-		>
-			View all
-			<ChevronRight size="1.2em" />
-		</a>
+		<Button href="/broadcasters/{data.broadcaster.id}/broadcasts" class="mt-4 w-full rounded-xl">
+			More broadcasts
+		</Button>
 	</section>
 	<section class="mt-4 py-2">
 		<h2 class="text-end font-bold">Chatters</h2>
@@ -95,18 +69,8 @@
 			</div>
 		</div>
 
-		<a
-			href="/broadcasters/{data.broadcaster.id}/chatters"
-			class="text-background bg-foreground hover:bg-background hover:text-foreground mt-4 flex flex-nowrap items-center gap-1 rounded-xl px-4 py-2"
-		>
-			View all
-			<ChevronRight size="1.2em" />
-		</a>
+		<Button href="/broadcasters/{data.broadcaster.id}/chatters" class="mt-4 w-full rounded-xl">
+			More chatters
+		</Button>
 	</section>
 </main>
-
-<style>
-	.broadcast:hover .timestamp {
-		color: var(--muted-foreground);
-	}
-</style>
