@@ -1,4 +1,13 @@
-import { pgTable, foreignKey, uuid, bigint, timestamp, varchar, pgEnum } from "drizzle-orm/pg-core";
+import {
+	pgTable,
+	foreignKey,
+	uuid,
+	bigint,
+	timestamp,
+	pgEnum,
+	index,
+	text,
+} from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 export const messageKind = pgEnum("message_kind", ["plus_two", "minus_two"]);
@@ -28,24 +37,33 @@ export const messages = pgTable(
 	],
 );
 
-export const chatters = pgTable("chatters", {
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	id: bigint({ mode: "number" }).primaryKey().notNull(),
-	displayName: varchar("display_name").notNull(),
-});
+export const chatters = pgTable(
+	"chatters",
+	{
+		// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+		id: bigint({ mode: "number" }).primaryKey().notNull(),
+		displayName: text("display_name").notNull(),
+	},
+	(table) => [
+		index("idx-trgm-chatters-display_name").using("gin", sql`${table.displayName} gin_trgm_ops`),
+	],
+);
 
-export const seaqlMigrations = pgTable("seaql_migrations", {
-	version: varchar().primaryKey().notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	appliedAt: bigint("applied_at", { mode: "number" }).notNull(),
-});
-
-export const broadcasters = pgTable("broadcasters", {
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	id: bigint({ mode: "number" }).primaryKey().notNull(),
-	displayName: varchar("display_name").notNull(),
-	profileImageUrl: varchar("profile_image_url"),
-});
+export const broadcasters = pgTable(
+	"broadcasters",
+	{
+		// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+		id: bigint({ mode: "number" }).primaryKey().notNull(),
+		displayName: text("display_name").notNull(),
+		profileImageUrl: text("profile_image_url"),
+	},
+	(table) => [
+		index("idx-trgm-broadcasters-display_name").using(
+			"gin",
+			sql`${table.displayName} gin_trgm_ops`,
+		),
+	],
+);
 
 export const broadcasts = pgTable(
 	"broadcasts",
@@ -54,7 +72,7 @@ export const broadcasts = pgTable(
 		id: bigint({ mode: "number" }).primaryKey().notNull(),
 		// You can use { mode: "bigint" } if numbers are exceeding js number limitations
 		broadcasterId: bigint("broadcaster_id", { mode: "number" }).notNull(),
-		title: varchar().notNull(),
+		title: text().notNull(),
 		startedAt: timestamp("started_at", { mode: "date" }).notNull(),
 		endedAt: timestamp("ended_at", { mode: "date" }),
 	},
@@ -64,5 +82,6 @@ export const broadcasts = pgTable(
 			foreignColumns: [broadcasters.id],
 			name: "fk-broadcaster-id",
 		}),
+		index("idx-fts-broadcasts-title").using("gin", sql`to_tsvector('english', ${table.title})`),
 	],
 );
