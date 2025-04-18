@@ -21,8 +21,8 @@ export const load: PageServerLoad = async ({ locals: { db } }) => {
 			),
 		})
 		.from(broadcasters)
-		.leftJoin(broadcasts, eq(broadcasts.broadcasterId, broadcasters.id))
-		.leftJoin(messages, eq(messages.broadcastId, broadcasts.id))
+		.innerJoin(broadcasts, eq(broadcasts.broadcasterId, broadcasters.id))
+		.innerJoin(messages, eq(messages.broadcastId, broadcasts.id))
 		.groupBy(broadcasters.displayName, broadcasters.id)
 		.orderBy(desc(sql`message_count`));
 

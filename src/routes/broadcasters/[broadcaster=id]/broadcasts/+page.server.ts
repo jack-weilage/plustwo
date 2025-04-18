@@ -36,7 +36,7 @@ export const load: PageServerLoad = async ({ parent, url, locals: { db } }) => {
 		})
 		.from(broadcasts)
 		.where(and(eq(broadcasts.broadcasterId, broadcaster.id), searchQuery))
-		.leftJoin(messages, eq(messages.broadcastId, broadcasts.id))
+		.innerJoin(messages, eq(messages.broadcastId, broadcasts.id))
 		.groupBy(broadcasts.id)
 		.orderBy(desc(broadcasts.startedAt))
 		.limit(ITEMS_PER_PAGE)

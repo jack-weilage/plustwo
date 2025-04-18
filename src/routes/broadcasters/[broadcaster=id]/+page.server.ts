@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ parent, locals: { db } }) => {
 		})
 		.from(broadcasts)
 		.where(eq(broadcasts.broadcasterId, broadcaster.id))
-		.leftJoin(messages, eq(messages.broadcastId, broadcasts.id))
+		.innerJoin(messages, eq(messages.broadcastId, broadcasts.id))
 		.groupBy(broadcasts.id)
 		.orderBy(desc(broadcasts.startedAt))
 		.limit(10);
@@ -36,9 +36,9 @@ export const load: PageServerLoad = async ({ parent, locals: { db } }) => {
 				AS INT), 0)`.as("score"),
 		})
 		.from(messages)
-		.leftJoin(chatters, eq(chatters.id, messages.chatterId))
-		.leftJoin(broadcasts, eq(messages.broadcastId, broadcasts.id))
-		.leftJoin(broadcasters, eq(broadcasts.broadcasterId, broadcasters.id))
+		.innerJoin(chatters, eq(chatters.id, messages.chatterId))
+		.innerJoin(broadcasts, eq(messages.broadcastId, broadcasts.id))
+		.innerJoin(broadcasters, eq(broadcasts.broadcasterId, broadcasters.id))
 		.where(eq(broadcasters.id, broadcaster.id))
 		.groupBy(chatters.id, chatters.displayName);
 
