@@ -62,7 +62,9 @@
 				}}
 			/>
 			<p class="text-muted-foreground text-sm">
-				{data.pagination.itemCount} result{data.pagination.itemCount === 1 ? "" : "s"}
+				{data.pagination.itemCount.toLocaleString()} result{data.pagination.itemCount === 1
+					? ""
+					: "s"}
 			</p>
 		</form>
 	</section>
