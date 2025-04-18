@@ -82,6 +82,6 @@ export const broadcasts = pgTable(
 			foreignColumns: [broadcasters.id],
 			name: "fk-broadcaster-id",
 		}),
-		index("idx-fts-broadcasts-title").using("gin", sql`to_tsvector('english', ${table.title})`),
+		index("idx-trgm-broadcasts-title").using("gin", sql`${table.title} gin_trgm_ops`),
 	],
 );
