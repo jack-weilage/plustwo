@@ -1,6 +1,7 @@
+import type { PageServerLoad } from "./$types";
+
 import { broadcasts, messages } from "$lib/server/db/drizzle/schema";
 import { and, count, desc, eq, ilike, sql } from "drizzle-orm";
-import type { PageServerLoad } from "./$types";
 import { escapeComparison } from "$lib/utils";
 
 const ITEMS_PER_PAGE = 10;
@@ -8,7 +9,7 @@ const ITEMS_PER_PAGE = 10;
 export const load: PageServerLoad = async ({ parent, url, locals: { db } }) => {
 	const { broadcaster } = await parent();
 
-	const search = url.searchParams.get("search");
+	const search = url.searchParams.get("search") ?? "";
 	const searchQuery = search
 		? sql`${ilike(broadcasts.title, `%${escapeComparison(search)}%`)} ESCAPE '$'`
 		: sql`TRUE`;
