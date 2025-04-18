@@ -3,7 +3,7 @@ import type { PageServerLoad } from "./$types";
 import { asc, count, desc, eq, sql } from "drizzle-orm";
 import { broadcasters, broadcasts, chatters, messages } from "$lib/server/db/drizzle/schema";
 
-export const load: PageServerLoad = async ({ parent, params, locals: { db } }) => {
+export const load: PageServerLoad = async ({ parent, locals: { db } }) => {
 	const { broadcaster } = await parent();
 
 	const broadcastList = await db
@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ parent, params, locals: { db } }) =
 				AS INT), 0)`,
 		})
 		.from(broadcasts)
-		.where(eq(broadcasts.broadcasterId, +params.broadcaster))
+		.where(eq(broadcasts.broadcasterId, broadcaster.id))
 		.leftJoin(messages, eq(messages.broadcastId, broadcasts.id))
 		.groupBy(broadcasts.id)
 		.orderBy(desc(broadcasts.startedAt))

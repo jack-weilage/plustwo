@@ -5,7 +5,7 @@ import { escapeComparison } from "$lib/utils";
 
 const ITEMS_PER_PAGE = 10;
 
-export const load: PageServerLoad = async ({ parent, params, url, locals: { db } }) => {
+export const load: PageServerLoad = async ({ parent, url, locals: { db } }) => {
 	const { broadcaster } = await parent();
 
 	const search = url.searchParams.get("search");
@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ parent, params, url, locals: { db }
 	const broadcastCount = await db
 		.select({ count: count(broadcasts.id) })
 		.from(broadcasts)
-		.where(and(eq(broadcasts.broadcasterId, +params.broadcaster), searchQuery))
+		.where(and(eq(broadcasts.broadcasterId, broadcaster.id), searchQuery))
 		.then((res) => res[0]?.count ?? 0);
 
 	const pageCount = Math.max(Math.ceil(broadcastCount / ITEMS_PER_PAGE), 1);
@@ -35,7 +35,7 @@ export const load: PageServerLoad = async ({ parent, params, url, locals: { db }
 				AS INT), 0)`,
 		})
 		.from(broadcasts)
-		.where(and(eq(broadcasts.broadcasterId, +params.broadcaster), searchQuery))
+		.where(and(eq(broadcasts.broadcasterId, broadcaster.id), searchQuery))
 		.leftJoin(messages, eq(messages.broadcastId, broadcasts.id))
 		.groupBy(broadcasts.id)
 		.orderBy(desc(broadcasts.startedAt))
