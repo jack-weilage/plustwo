@@ -1,19 +1,25 @@
 import { broadcasts, messages } from "$lib/server/db/drizzle/schema";
 import { and, count, desc, eq, ilike, sql } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
+import { escapeComparison } from "$lib/utils";
 
 const ITEMS_PER_PAGE = 10;
 
 export const load: PageServerLoad = async ({ parent, params, url, locals: { db } }) => {
 	const { broadcaster } = await parent();
 
+	const search = url.searchParams.get("search");
+	const searchQuery = search
+		? sql`${ilike(broadcasts.title, `%${escapeComparison(search)}%`)} ESCAPE '$'`
+		: sql`TRUE`;
+
 	const broadcastCount = await db
 		.select({ count: count(broadcasts.id) })
 		.from(broadcasts)
-		.where(eq(broadcasts.broadcasterId, +params.broadcaster))
+		.where(and(eq(broadcasts.broadcasterId, +params.broadcaster), searchQuery))
 		.then((res) => res[0]?.count ?? 0);
 
-	const pageCount = Math.ceil(broadcastCount / ITEMS_PER_PAGE);
+	const pageCount = Math.max(Math.ceil(broadcastCount / ITEMS_PER_PAGE), 1);
 	const page = Math.min(Math.max(Math.floor(+(url.searchParams.get("page") ?? 1)), 1), pageCount);
 	const broadcastList = await db
 		.select({
@@ -29,7 +35,7 @@ export const load: PageServerLoad = async ({ parent, params, url, locals: { db }
 				AS INT), 0)`,
 		})
 		.from(broadcasts)
-		.where(eq(broadcasts.broadcasterId, +params.broadcaster))
+		.where(and(eq(broadcasts.broadcasterId, +params.broadcaster), searchQuery))
 		.leftJoin(messages, eq(messages.broadcastId, broadcasts.id))
 		.groupBy(broadcasts.id)
 		.orderBy(desc(broadcasts.startedAt))
@@ -44,5 +50,6 @@ export const load: PageServerLoad = async ({ parent, params, url, locals: { db }
 			page,
 			perPage: ITEMS_PER_PAGE,
 		},
+		search,
 	};
 };
