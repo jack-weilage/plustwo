@@ -1,5 +1,5 @@
-import { broadcasts, messages } from "$lib/server/drizzle/schema";
-import { count, desc, eq, sql } from "drizzle-orm";
+import { broadcasts, messages } from "$lib/server/db/drizzle/schema";
+import { and, count, desc, eq, ilike, sql } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
 
 const ITEMS_PER_PAGE = 10;

@@ -1,7 +1,7 @@
 import type { PageServerLoad } from "./$types";
 
 import { asc, count, desc, eq, sql } from "drizzle-orm";
-import { broadcasters, broadcasts, chatters, messages } from "$lib/server/drizzle/schema";
+import { broadcasters, broadcasts, chatters, messages } from "$lib/server/db/drizzle/schema";
 
 export const load: PageServerLoad = async ({ parent, params, locals: { db } }) => {
 	const { broadcaster } = await parent();

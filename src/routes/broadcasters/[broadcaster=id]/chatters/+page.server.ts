@@ -1,4 +1,4 @@
-import { broadcasts, chatters, messages } from "$lib/server/drizzle/schema";
+import { broadcasts, chatters, messages } from "$lib/server/db/drizzle/schema";
 import { count, eq, sql } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
 

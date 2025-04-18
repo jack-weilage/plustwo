@@ -1,7 +1,7 @@
 import type { PageServerLoad } from "./$types";
 
 import { count, eq, sql } from "drizzle-orm";
-import { messages } from "$lib/server/drizzle/schema";
+import { messages } from "$lib/server/db/drizzle/schema";
 
 const truncateToMinute = sql<Date>`DATE_TRUNC('minute', ${messages.sentAt})`;
 
