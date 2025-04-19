@@ -71,7 +71,7 @@
 		</form>
 	</section>
 	<section class="py-2">
-		<ul class="grid grid-cols-2 gap-2">
+		<ul class="grid grid-cols-1 gap-2 md:grid-cols-2">
 			{#each data.chatters as chatter (chatter.displayName)}
 				<li class="contents">
 					<ChatterPreview {chatter} />
