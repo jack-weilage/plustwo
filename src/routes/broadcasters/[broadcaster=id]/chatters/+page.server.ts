@@ -1,13 +1,33 @@
-import { broadcasts, chatters, messages } from "$lib/server/db/drizzle/schema";
-import { count, eq, sql } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ parent, params, locals: { db } }) => {
+import { broadcasts, chatters, messages } from "$lib/server/db/drizzle/schema";
+import { and, count, countDistinct, desc, eq, ilike, sql } from "drizzle-orm";
+import { escapeComparison } from "$lib/utils";
+
+const ITEMS_PER_PAGE = 50;
+
+export const load: PageServerLoad = async ({ parent, url, locals: { db } }) => {
 	const { broadcaster } = await parent();
+
+	const search = url.searchParams.get("search") ?? "";
+	const searchQuery = search
+		? sql`${ilike(chatters.displayName, `%${escapeComparison(search)}%`)} ESCAPE '$'`
+		: sql`TRUE`;
+
+	const userCount = await db
+		.select({ count: countDistinct(chatters.id) })
+		.from(chatters)
+		.innerJoin(messages, eq(chatters.id, messages.chatterId))
+		.innerJoin(broadcasts, eq(messages.broadcastId, broadcasts.id))
+		.where(and(eq(broadcasts.broadcasterId, broadcaster.id), searchQuery))
+		.then((res) => res[0]?.count ?? 0);
+
+	const pageCount = Math.max(Math.ceil(userCount / ITEMS_PER_PAGE), 1);
+	const page = Math.min(Math.max(Math.floor(+(url.searchParams.get("page") ?? 1)), 1), pageCount);
 
 	const users = await db
 		.select({
-			name: chatters.displayName,
+			displayName: chatters.displayName,
 			// Name the returned column so the orderBy can reference it
 			plusTwoCount: count(sql`CASE WHEN ${messages.messageKind} = 'plus_two' THEN 1 END`).as(
 				"plus_two_count",
@@ -17,11 +37,24 @@ export const load: PageServerLoad = async ({ parent, params, locals: { db } }) =
 			),
 		})
 		.from(chatters)
-		.leftJoin(messages, eq(chatters.id, messages.chatterId))
-		// Filter by broadcaster
-		.leftJoin(broadcasts, eq(messages.broadcastId, broadcasts.id))
-		.where(eq(broadcasts.broadcasterId, +params.broadcaster))
-		.groupBy(chatters.id);
+		.innerJoin(messages, eq(chatters.id, messages.chatterId))
+		// Filter by broadcaster and search query
+		.innerJoin(broadcasts, eq(messages.broadcastId, broadcasts.id))
+		.where(and(eq(broadcasts.broadcasterId, broadcaster.id), searchQuery))
+		.groupBy(chatters.id)
+		.orderBy(desc(sql`plus_two_count`))
+		// Paginate the result
+		.limit(ITEMS_PER_PAGE)
+		.offset((page - 1) * ITEMS_PER_PAGE);
 
-	return { broadcaster, chatters: users };
+	return {
+		broadcaster,
+		chatters: users,
+		search,
+		pagination: {
+			itemCount: userCount,
+			page,
+			perPage: ITEMS_PER_PAGE,
+		},
+	};
 };
