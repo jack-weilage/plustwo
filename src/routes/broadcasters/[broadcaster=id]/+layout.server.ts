@@ -9,6 +9,7 @@ export const load: LayoutServerLoad = async ({ params, locals: { db } }) => {
 		.select()
 		.from(broadcasters)
 		.where(eq(broadcasters.id, +params.broadcaster))
+		.limit(1)
 		.then(([broadcaster]) => broadcaster);
 
 	if (!broadcaster) {
