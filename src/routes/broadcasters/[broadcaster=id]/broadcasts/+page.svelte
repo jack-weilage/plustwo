@@ -74,6 +74,10 @@
 				<li>
 					<BroadcastPreview {broadcast} broadcaster={data.broadcaster} />
 				</li>
+			{:else}
+				<li>
+					<p class="text-muted-foreground text-sm">No broadcasts found.</p>
+				</li>
 			{/each}
 		</ul>
 	</section>
