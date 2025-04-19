@@ -71,7 +71,7 @@
 		</form>
 	</section>
 	<section class="py-2">
-		<ul class="grid grid-cols-[auto_repeat(3,max-content)] gap-x-2">
+		<ul class="grid grid-cols-2 gap-2">
 			{#each data.chatters as chatter (chatter.displayName)}
 				<li class="contents">
 					<ChatterPreview {chatter} />
