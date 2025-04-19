@@ -17,7 +17,17 @@
 
 	let { data } = $props();
 
-	let candlestickSeries = $state([]);
+	let candlestickSeries: {
+		timestamp: Date;
+
+		open: number;
+		close: number;
+		lowest: number;
+		highest: number;
+
+		volume: number;
+		difference: number;
+	}[] = $state([]);
 	$effect(() => {
 		let total = 0;
 		candlestickSeries = data.sentimentList.map(({ timestamp, plusTwoCount, minusTwoCount }) => {
