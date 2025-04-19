@@ -43,15 +43,19 @@
 		? 'border-transparent'
 		: 'border-destructive '}"
 >
-	<span class="truncate font-bold">{broadcast.title}</span>
 	<div class="flex flex-nowrap items-center justify-between gap-2">
-		<span>{broadcast.score >= 0 ? "+" : ""}{broadcast.score.toLocaleString()}</span>
+		<span class="truncate font-bold">{broadcast.title}</span>
 		{#if broadcast.endedAt}
-			<span class="text-muted-foreground">
+			<span class="text-muted-foreground font-light">
 				{humanTimestamp(+broadcast.endedAt - +broadcast.startedAt)}
 			</span>
 		{:else}
 			<span class="text-destructive">Live</span>
 		{/if}
+	</div>
+	<div class="flex flex-nowrap items-center justify-between gap-2">
+		<span>{broadcast.score >= 0 ? "+" : ""}{broadcast.score.toLocaleString()}</span>
+
+		<span class="text-muted-foreground font-light">{broadcast.startedAt.toLocaleDateString()}</span>
 	</div>
 </a>
