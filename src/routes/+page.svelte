@@ -15,7 +15,7 @@
 />
 
 <main class="mx-auto h-full min-h-screen max-w-4xl px-4 py-4">
-	<section class="mb-4">
+	<section class="py-2">
 		<h2 class="mb-2 text-xl font-semibold">Tracked Broadcasters</h2>
 		<ul class="flex flex-col gap-2">
 			{#each data.broadcasterList as broadcaster (broadcaster.id)}
@@ -47,7 +47,7 @@
 			{/each}
 		</ul>
 	</section>
-	<section class="mt-16">
+	<section class="mt-32 py-2">
 		<h2 class="text-lg font-semibold">FAQ</h2>
 		<Accordion.Root type="multiple">
 			<Accordion.Item value="1">
