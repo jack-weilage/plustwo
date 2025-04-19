@@ -6,7 +6,11 @@ import { escapeComparison } from "$lib/utils";
 
 const ITEMS_PER_PAGE = 50;
 
-export const load: PageServerLoad = async ({ parent, url, locals: { db } }) => {
+export const load: PageServerLoad = async ({ setHeaders, parent, url, locals: { db } }) => {
+	setHeaders({
+		"Cache-Control": "max-age=60, public",
+	});
+
 	const { broadcaster } = await parent();
 
 	const search = url.searchParams.get("search") ?? "";

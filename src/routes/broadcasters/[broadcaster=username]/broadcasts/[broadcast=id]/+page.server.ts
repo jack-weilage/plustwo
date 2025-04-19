@@ -5,8 +5,14 @@ import { messages } from "$lib/server/db/drizzle/schema";
 
 const truncateToMinute = sql<Date>`DATE_TRUNC('minute', ${messages.sentAt})`;
 
-export const load: PageServerLoad = async ({ parent, locals: { db } }) => {
+export const load: PageServerLoad = async ({ parent, setHeaders, locals: { db } }) => {
 	const { broadcaster, broadcast } = await parent();
+
+	if (broadcast.endedAt) {
+		setHeaders({
+			"Cache-Control": "max-age=60, public",
+		});
+	}
 
 	const sentimentList = await db
 		.select({
