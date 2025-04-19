@@ -36,7 +36,7 @@
 	</section>
 	<section class="py-2">
 		<ul class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-			{#each data.broadcastList as broadcast}
+			{#each data.broadcastList as broadcast (broadcast.id)}
 				<li>
 					<BroadcastPreview {broadcast} broadcaster={data.broadcaster} />
 				</li>

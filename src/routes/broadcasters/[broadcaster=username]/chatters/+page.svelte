@@ -72,7 +72,7 @@
 	</section>
 	<section class="py-2">
 		<ul class="grid grid-cols-[auto_repeat(3,max-content)] gap-x-2">
-			{#each data.chatters as chatter}
+			{#each data.chatters as chatter (chatter.displayName)}
 				<li class="contents">
 					<ChatterPreview {chatter} />
 				</li>
@@ -87,7 +87,6 @@
 		<Pagination.Root
 			count={data.pagination.itemCount}
 			perPage={data.pagination.perPage}
-			siblingCount={3}
 			page={data.pagination.page}
 			onPageChange={(page) => {
 				pageStore.url.searchParams.set("page", page.toString());

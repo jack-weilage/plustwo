@@ -18,7 +18,7 @@
 	<section class="mb-4">
 		<h2 class="mb-2 text-xl font-semibold">Tracked Broadcasters</h2>
 		<ul class="flex flex-col gap-2">
-			{#each data.broadcasterList as broadcaster}
+			{#each data.broadcasterList as broadcaster (broadcaster.id)}
 				<li>
 					<a
 						href="/broadcasters/{broadcaster.displayName}"

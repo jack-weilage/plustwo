@@ -70,7 +70,7 @@
 	</section>
 	<section class="py-2">
 		<ul class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-			{#each data.broadcastList as broadcast}
+			{#each data.broadcastList as broadcast (broadcast.id)}
 				<li>
 					<BroadcastPreview {broadcast} broadcaster={data.broadcaster} />
 				</li>
@@ -85,7 +85,6 @@
 		<Pagination.Root
 			count={data.pagination.itemCount}
 			perPage={data.pagination.perPage}
-			siblingCount={3}
 			page={data.pagination.page}
 			onPageChange={(page) => {
 				pageStore.url.searchParams.set("page", page.toString());
