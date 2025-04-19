@@ -43,7 +43,10 @@
 			{/each}
 		</ul>
 
-		<Button href="/broadcasters/{data.broadcaster.id}/broadcasts" class="mt-4 w-full rounded-xl">
+		<Button
+			href="/broadcasters/{data.broadcaster.displayName}/broadcasts"
+			class="mt-4 w-full rounded-xl"
+		>
 			More broadcasts
 		</Button>
 	</section>
@@ -69,7 +72,10 @@
 			</div>
 		</div>
 
-		<Button href="/broadcasters/{data.broadcaster.id}/chatters" class="mt-4 w-full rounded-xl">
+		<Button
+			href="/broadcasters/{data.broadcaster.displayName}/chatters"
+			class="mt-4 w-full rounded-xl"
+		>
 			More chatters
 		</Button>
 	</section>

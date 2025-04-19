@@ -65,13 +65,13 @@
 				</Breadcrumb.Item>
 				<Breadcrumb.Separator />
 				<Breadcrumb.Item>
-					<Breadcrumb.Link href="/broadcasters/{data.broadcaster.id}">
+					<Breadcrumb.Link href="/broadcasters/{data.broadcaster.displayName}">
 						{data.broadcaster.displayName}
 					</Breadcrumb.Link>
 				</Breadcrumb.Item>
 				<Breadcrumb.Separator />
 				<Breadcrumb.Item>
-					<Breadcrumb.Link href="/broadcasters/{data.broadcaster.id}/broadcasts">
+					<Breadcrumb.Link href="/broadcasters/{data.broadcaster.displayName}/broadcasts">
 						Broadcasts
 					</Breadcrumb.Link>
 				</Breadcrumb.Item>

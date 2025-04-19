@@ -1,15 +1,15 @@
 <script lang="ts">
+	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
+	import * as Pagination from "$lib/components/ui/pagination";
+	import Seo from "$lib/components/Seo.svelte";
+	import { Input } from "$lib/components/ui/input";
+	import ChatterPreview from "$lib/components/ChatterPreview.svelte";
+
 	import ChevronLeft from "@lucide/svelte/icons/chevron-left";
 	import ChevronRight from "@lucide/svelte/icons/chevron-right";
-	import * as Breadcrumb from "$lib/components/ui/breadcrumb";
-	import * as Pagination from "$lib/components/ui/pagination/index.js";
-	import { Input } from "$lib/components/ui/input";
-	import BroadcastPreview from "$lib/components/BroadcastPreview.svelte";
-	import Seo from "$lib/components/Seo.svelte";
-
-	import { debounce } from "$lib/utils";
 
 	import { page as pageStore } from "$app/state";
+	import { debounce } from "$lib/utils";
 	import { goto } from "$app/navigation";
 
 	let { data } = $props();
@@ -24,10 +24,13 @@
 	}, 300);
 </script>
 
-<Seo title="+2 | {data.broadcaster.displayName} | Broadcasts (Page {data.pagination.page})" />
+<Seo
+	title="+2 | {data.broadcaster.displayName} | Chatters"
+	icon={data.broadcaster.profileImageUrl!}
+/>
 
-<main class="mx-auto min-h-screen max-w-4xl px-4 py-4">
-	<section class="flex justify-between py-2">
+<main class="mx-auto max-w-4xl px-4 py-4">
+	<section class="py-2">
 		<Breadcrumb.Root>
 			<Breadcrumb.List>
 				<Breadcrumb.Item>
@@ -35,13 +38,13 @@
 				</Breadcrumb.Item>
 				<Breadcrumb.Separator />
 				<Breadcrumb.Item>
-					<Breadcrumb.Link href="/broadcasters/{data.broadcaster.id}">
+					<Breadcrumb.Link href="/broadcasters/{data.broadcaster.displayName}">
 						{data.broadcaster.displayName}
 					</Breadcrumb.Link>
 				</Breadcrumb.Item>
 				<Breadcrumb.Separator />
 				<Breadcrumb.Item>
-					<Breadcrumb.Page>Broadcasts</Breadcrumb.Page>
+					<Breadcrumb.Page>Chatters</Breadcrumb.Page>
 				</Breadcrumb.Item>
 			</Breadcrumb.List>
 		</Breadcrumb.Root>
@@ -50,14 +53,13 @@
 		<form class="flex flex-col gap-2" role="search">
 			<Input
 				type="text"
-				placeholder="Search Broadcasts"
+				placeholder="Search Chatters"
 				value={data.search}
 				oninput={(e) => {
 					const search = e.currentTarget.value;
 					pageStore.url.searchParams.set("search", search);
 					pageStore.url.searchParams.set("page", "1");
 
-					// Debounce the search input to avoid too many requests.
 					debouncedSearch();
 				}}
 			/>
@@ -69,14 +71,14 @@
 		</form>
 	</section>
 	<section class="py-2">
-		<ul class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-			{#each data.broadcastList as broadcast}
-				<li>
-					<BroadcastPreview {broadcast} broadcaster={data.broadcaster} />
+		<ul class="grid grid-cols-[auto_repeat(3,max-content)] gap-x-2">
+			{#each data.chatters as chatter}
+				<li class="contents">
+					<ChatterPreview {chatter} />
 				</li>
 			{:else}
-				<li>
-					<p class="text-muted-foreground text-sm">No broadcasts found.</p>
+				<li class="col-span-full text-sm">
+					<span class="text-muted-foreground">No chatters found</span>
 				</li>
 			{/each}
 		</ul>

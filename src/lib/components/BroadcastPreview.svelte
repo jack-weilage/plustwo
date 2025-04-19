@@ -4,7 +4,7 @@
 		broadcast,
 	}: {
 		broadcaster: {
-			id: number;
+			displayName: string;
 		};
 		broadcast: {
 			id: number;
@@ -38,7 +38,7 @@
 </script>
 
 <a
-	href="/broadcasters/{broadcaster.id}/broadcasts/{broadcast.id}"
+	href="/broadcasters/{broadcaster.displayName}/broadcasts/{broadcast.id}"
 	class="hover:bg-foreground hover:text-background flex flex-col gap-2 rounded-xl border-2 px-4 py-2 text-sm shadow transition-colors {broadcast.endedAt
 		? 'border-transparent'
 		: 'border-destructive '}"

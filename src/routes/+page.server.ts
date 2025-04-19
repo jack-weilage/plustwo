@@ -6,7 +6,7 @@ import { and, countDistinct, desc, eq, exists, isNull, sql } from "drizzle-orm";
 export const load: PageServerLoad = async ({ locals: { db } }) => {
 	const broadcasterList = await db
 		.select({
-			name: broadcasters.displayName,
+			displayName: broadcasters.displayName,
 			id: broadcasters.id,
 			profileImageUrl: broadcasters.profileImageUrl,
 

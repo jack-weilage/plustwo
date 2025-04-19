@@ -21,12 +21,12 @@
 			{#each data.broadcasterList as broadcaster}
 				<li>
 					<a
-						href="/broadcasters/{broadcaster.id}"
+						href="/broadcasters/{broadcaster.displayName}"
 						class="hover:bg-foreground hover:text-background flex items-center justify-between gap-2 rounded-xl px-2 py-1 font-bold shadow transition-colors"
 					>
 						<span class="flex items-center gap-2">
 							<img src={broadcaster.profileImageUrl} alt="" class="size-8 rounded-full" />
-							{broadcaster.name}
+							{broadcaster.displayName}
 						</span>
 
 						<span class="flex gap-4 py-2">
