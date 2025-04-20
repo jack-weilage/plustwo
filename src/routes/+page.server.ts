@@ -1,6 +1,6 @@
 import type { PageServerLoad } from "./$types";
 
-import { broadcasters, broadcasts, messages } from "$lib/server/db/drizzle/schema";
+import { broadcasters, broadcasts, chatters, messages } from "$lib/server/db/drizzle/schema";
 import { and, countDistinct, desc, eq, exists, isNull, sql } from "drizzle-orm";
 
 export const load: PageServerLoad = async ({ locals: { db } }) => {
@@ -26,5 +26,12 @@ export const load: PageServerLoad = async ({ locals: { db } }) => {
 		.groupBy(broadcasters.displayName, broadcasters.id)
 		.orderBy(desc(sql`message_count`));
 
-	return { broadcasterList };
+	const chatterCount = await db
+		.select({
+			count: countDistinct(chatters.id).as("count"),
+		})
+		.from(chatters)
+		.then(([{ count }]) => count);
+
+	return { broadcasterList, chatterCount };
 };

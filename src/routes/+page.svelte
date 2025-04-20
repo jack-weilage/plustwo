@@ -7,6 +7,18 @@
 	import Seo from "$lib/components/Seo.svelte";
 
 	let { data } = $props();
+
+	let stats = $derived(
+		data.broadcasterList.reduce(
+			(acc, cur) => {
+				acc.messageCount += cur.messageCount;
+				acc.broadcastCount += cur.broadcastCount;
+
+				return acc;
+			},
+			{ messageCount: 0, broadcastCount: 0 },
+		),
+	);
 </script>
 
 <Seo
@@ -45,6 +57,68 @@
 					</a>
 				</li>
 			{/each}
+		</ul>
+	</section>
+	<section class="mt-8 py-2">
+		<h2 class="sr-only">Stats</h2>
+		<ul class="grid auto-rows-[1fr_auto_auto] grid-cols-2 gap-8">
+			<li
+				class="row-[span_3] grid aspect-4/3 grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
+			>
+				<div class="flex place-self-center">
+					<span class="text-center text-6xl">{data.broadcasterList.length.toLocaleString()}</span>
+				</div>
+
+				<h3 class="font-bold">Tracked broadcasters</h3>
+
+				<p class="text-muted-foreground text-sm">
+					Broadcasters are manually curated, chosen if their chat uses +2 or -2
+				</p>
+			</li>
+			<li
+				class="row-[span_3] grid aspect-4/3 grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
+			>
+				<div class="flex place-self-center">
+					<span class="text-center text-6xl">{stats.broadcastCount.toLocaleString()}</span>
+				</div>
+
+				<h3 class="font-bold">Indexed broadcasts</h3>
+
+				<p class="text-muted-foreground text-sm">
+					Each broadcast is a stream that has been indexed, either live or from Twitch's archive.
+					Unfortunately, Twitch's archives only date back ~60 days, so streams that started before
+					the broadcaster was tracked will not appear here.
+				</p>
+			</li>
+			<li
+				class="row-[span_3] grid aspect-4/3 grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
+			>
+				<div class="flex place-self-center">
+					<span class="text-center text-6xl">{data.chatterCount.toLocaleString()}</span>
+				</div>
+
+				<h3 class="font-bold">Indexed chatters</h3>
+
+				<p class="text-muted-foreground text-sm">
+					Chatters are the people who have sent +2 or -2 messages in the chat. This is not an
+					accurate count of the total number of chatters, as only specific messages are indexed.
+				</p>
+			</li>
+			<li
+				class="row-[span_3] grid aspect-4/3 grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
+			>
+				<div class="flex place-self-center">
+					<span class="text-center text-6xl">{stats.messageCount.toLocaleString()}</span>
+				</div>
+
+				<h3 class="font-bold">Indexed messages</h3>
+
+				<p class="text-muted-foreground text-sm">
+					The total number of messages sent in the chat that have been indexed. This is not an
+					accurate count of the total number of messages sent, as only messages containing +2 or -2
+					are indexed.
+				</p>
+			</li>
 		</ul>
 	</section>
 	<section class="mt-32 py-2">
