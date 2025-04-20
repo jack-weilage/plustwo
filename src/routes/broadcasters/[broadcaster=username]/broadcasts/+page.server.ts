@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ parent, url, locals: { db } }) => {
 		.select({ count: count(broadcasts.id) })
 		.from(broadcasts)
 		.where(and(eq(broadcasts.broadcasterId, broadcaster.id), searchQuery))
-		.then((res) => res[0]?.count ?? 0);
+		.then(([{ count }]) => count);
 
 	const pageCount = Math.max(Math.ceil(broadcastCount / ITEMS_PER_PAGE), 1);
 	const page = Math.min(Math.max(Math.floor(+(url.searchParams.get("page") ?? 1)), 1), pageCount);
