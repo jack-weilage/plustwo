@@ -56,6 +56,9 @@
 	<div class="flex flex-nowrap items-center justify-between gap-2">
 		<span>{broadcast.score >= 0 ? "+" : ""}{broadcast.score.toLocaleString()}</span>
 
-		<span class="text-muted-foreground font-light">{broadcast.startedAt.toLocaleDateString()}</span>
+		<span class="text-muted-foreground font-light">
+			{broadcast.startedAt.toLocaleTimeString()}
+			{broadcast.startedAt.toLocaleDateString()}
+		</span>
 	</div>
 </a>
