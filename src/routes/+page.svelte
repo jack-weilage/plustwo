@@ -61,9 +61,9 @@
 	</section>
 	<section class="mt-8 py-2">
 		<h2 class="sr-only">Stats</h2>
-		<ul class="grid auto-rows-[1fr_auto_auto] grid-cols-2 gap-8">
+		<ul class="grid auto-rows-[10rem_auto_auto] grid-cols-1 gap-8 md:grid-cols-2">
 			<li
-				class="row-[span_3] grid aspect-4/3 grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
+				class="row-[span_3] grid grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
 			>
 				<div class="flex place-self-center">
 					<span class="text-center text-6xl">{data.broadcasterList.length.toLocaleString()}</span>
@@ -76,7 +76,7 @@
 				</p>
 			</li>
 			<li
-				class="row-[span_3] grid aspect-4/3 grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
+				class="row-[span_3] grid grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
 			>
 				<div class="flex place-self-center">
 					<span class="text-center text-6xl">{stats.broadcastCount.toLocaleString()}</span>
@@ -91,7 +91,7 @@
 				</p>
 			</li>
 			<li
-				class="row-[span_3] grid aspect-4/3 grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
+				class="row-[span_3] grid grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
 			>
 				<div class="flex place-self-center">
 					<span class="text-center text-6xl">{data.chatterCount.toLocaleString()}</span>
@@ -105,7 +105,7 @@
 				</p>
 			</li>
 			<li
-				class="row-[span_3] grid aspect-4/3 grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
+				class="row-[span_3] grid grid-rows-subgrid gap-2 rounded-xl p-4 shadow transition-shadow hover:shadow-xl"
 			>
 				<div class="flex place-self-center">
 					<span class="text-center text-6xl">{stats.messageCount.toLocaleString()}</span>
@@ -121,7 +121,7 @@
 			</li>
 		</ul>
 	</section>
-	<section class="mt-32 py-2">
+	<section class="my-32 py-2">
 		<h2 class="text-lg font-semibold">FAQ</h2>
 		<Accordion.Root type="multiple">
 			<Accordion.Item value="1">
