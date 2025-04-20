@@ -28,12 +28,12 @@ export const messages = pgTable(
 			columns: [table.broadcastId],
 			foreignColumns: [broadcasts.id],
 			name: "fk-broadcast-id",
-		}),
+		}).onDelete("cascade"),
 		foreignKey({
 			columns: [table.chatterId],
 			foreignColumns: [chatters.id],
 			name: "fk-chatter-id",
-		}),
+		}).onDelete("cascade"),
 	],
 );
 
@@ -81,7 +81,7 @@ export const broadcasts = pgTable(
 			columns: [table.broadcasterId],
 			foreignColumns: [broadcasters.id],
 			name: "fk-broadcaster-id",
-		}),
+		}).onDelete("cascade"),
 		index("idx-trgm-broadcasts-title").using("gin", sql`${table.title} gin_trgm_ops`),
 	],
 );
